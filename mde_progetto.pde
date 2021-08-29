@@ -1,11 +1,16 @@
 import processing.sound.*;
 
-int attemptsForLevel = 12;
+int tAttemptsForLevel = 3; // 3
+IntList tAttempts = new IntList();
+
+boolean isTraining = true;
+
+int attemptsForLevel = 10; // 10
 IntList attempts = new IntList();
 
-String experiment = "ex1";
+String session = "s1";
 String participant = "p01";
-String session = "s01";
+String age = "a01";
 
 
 int currAttempt = 0;
@@ -67,23 +72,26 @@ void setup() {
 
   loadViridis();
 
+  for (int i = 0; i < tAttemptsForLevel; i++) {
+    tAttempts.append('n');
+    tAttempts.append('s');
+    tAttempts.append('b');
+  }
+  tAttempts.shuffle();
+
   for (int i = 0; i < attemptsForLevel; i++) {
-    attempts.append('n');
     attempts.append('s');
-    attempts.append('b');
+    attempts.append('s');
+    attempts.append('s');
   }
   attempts.shuffle();
-  println(attempts);
 
   results = new String[attempts.size()];
-
   restart();
-
-  
 }
 
 void storeResults() {
-  saveStrings(String.format("results/%s%s%s-%d\\%d\\%d-%d:%d", experiment, participant, session, 
+  saveStrings(String.format("results/%s-%s-%s-%d\\%d\\%d-%d:%d", session, participant, age, 
                                             day(), month(), year(), hour(), minute()), results);
 }
 
@@ -91,7 +99,19 @@ void restart() {
 
   solution = (int) random(numBalls);
 
-  int level = attempts.get(currAttempt);
+  int level;
+
+  if (isTraining && currAttempt == tAttempts.size()) {
+    isTraining = false;
+    currAttempt = 0;
+  }
+
+  if (isTraining) {
+    level = tAttempts.get(currAttempt);
+  } else {
+    level = attempts.get(currAttempt);
+  }
+
 
   if (level == 'n') {
     sonification = false;
@@ -161,7 +181,6 @@ void draw() {
   }
 
   for (Ball ball : balls) {
-    //ball.collide();
     ball.move();
     ball.display();  
     if (sonification) ball.ring();
@@ -204,35 +223,7 @@ class Ball {
     }
   }
   
-  void collide() {
-    for (int i = id + 1; i < numBalls; i++) {
-      float dx = others[i].x - x;
-      float dy = others[i].y - y;
-      float distance = sqrt(dx*dx + dy*dy);
-      float minDist = others[i].diameter/2 + diameter/2;
-      if (distance < minDist) {
-        float angle = atan2(dy, dx);
-        float targetX = x + cos(angle) * minDist;
-        float targetY = y + sin(angle) * minDist;
-        float ax = (targetX - others[i].x) * spring;
-        float ay = (targetY - others[i].y) * spring;
-        vx -= ax;
-        vy -= ay;
-        others[i].vx += ax;
-        others[i].vy += ay;
-        if (!didBump[i]) {
-          doBump();
-          didBump[i] = true;
-        }
-      } else {
-        didBump[i] = false;
-      }
-    }   
-  }
-  
   void move() {
-
-    // float delta = sqrt(mag(vx, vy)) * speed;
 
     vx += pow(vx * map(x, 0, widthDim, 0, 1), 1/3);
     vx -= pow(vx * map(widthDim - x, 0, widthDim, 0, 1), 1/3);
@@ -242,7 +233,6 @@ class Ball {
 
     vx += random(-speed, speed);
     vy += random(-speed, speed);
-
 
     x += vx;
     y += vy;
@@ -277,34 +267,6 @@ class Ball {
       //if (f < friction * 0.55) doBump();
     }
   }
-  
-  //   void move() {
-  //   float delta = sqrt(mag(vx, vy)) * speed;
-  //   vx += random(-delta, delta);
-  //   vy += random(-delta, delta);
-  //   x += vx;
-  //   y += vy;
-  //   if (x + diameter / 2 > widthDim) {
-  //     x = widthDim - diameter / 2;
-  //     vx *= friction;
-  //     doBump();
-  //   }
-  //   else if (x - diameter / 2 < 0) {
-  //     x = diameter / 2;
-  //     vx *= friction;
-  //     doBump();
-  //   }
-  //   if (y + diameter / 2 > height) {
-  //     y = height - diameter / 2;
-  //     vy *= friction;
-  //     doBump();
-  //   } 
-  //   else if (y - diameter / 2 < 0) {
-  //     y = diameter / 2;
-  //     vy *= friction;
-  //     doBump();
-  //   }
-  // }
 
   void display() {
     fill(colorValue);
@@ -336,7 +298,7 @@ class Ball {
       float speedMag;
       for (int i = 0; i < numTones; i++) {
         speedMag = smoothing * mag(vx, vy) + (1 - smoothing) * oldSpeedMag;
-        offset = map(speedMag, 0, 1.5, 0, 1);
+        offset = map(speedMag, 0, 2.5, 0, 1);
         oldSpeedMag = speedMag;
         triWaves[i].freq(triFreq[i] * (1 + offset));
         filters[i].freq(map(pow(offset, 1/2), 0, 1, triFreq[0], 2 * triFreq[numTones - 1]));
@@ -363,34 +325,31 @@ void mousePressed() {
 
   int dist = (int) Math.abs(pressedBall.colorIndex - balls[solution].colorIndex);
   float time = (System.currentTimeMillis() - startTime) / 1000.0;
-  //println("distanza colore", dist);
-  //println("tempo trascorso", time);
 
-  // livello di sonification, 
-  // tempo di completamento, 
-  // distanza colore, 
-  // colore taget, 
-  // colore selezionato, 
-  // dimensione target, 
-  // dimensione cliccato
-  results[currAttempt] = String.format("%c, %s, %d, %d, %d, %d, %d", 
-      attempts.get(currAttempt), 
-      str(time), 
-      dist,
-      balls[solution].colorIndex, 
-      pressedBall.colorIndex, 
-      (int) balls[solution].diameter,
-      (int) pressedBall.diameter);
-      
-  println(results[currAttempt]);
-  
+  if (!isTraining) {
+    // livello di sonification, 
+    // tempo di completamento, 
+    // distanza colore, 
+    // colore taget, 
+    // colore selezionato, 
+    // dimensione target, 
+    // dimensione cliccato
+    results[currAttempt] = String.format("%c, %s, %d, %d, %d, %d, %d", 
+        attempts.get(currAttempt), 
+        str(time), 
+        dist,
+        balls[solution].colorIndex, 
+        pressedBall.colorIndex, 
+        (int) balls[solution].diameter,
+        (int) pressedBall.diameter);
+        
+    println(results[currAttempt]);
+  }
   if (sonification) stopOscs();
   delay(1000);
   increaseAttempt();
   restart();
 }
-
-
 
 void stopOscs() {
   for (int i = 0; i < numTones; i++) {
@@ -411,7 +370,6 @@ void loadViridis() {
     viridis[i] = unhex(stringColors[i]) | 0xff000000;
   }
 }
-
 
 
 float midiToFreq(int note) {
