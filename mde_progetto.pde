@@ -1,6 +1,6 @@
 import processing.sound.*;
 
-int attemptsForLevel = 4;
+int attemptsForLevel = 12;
 IntList attempts = new IntList();
 
 String experiment = "ex1";
@@ -12,8 +12,8 @@ int currAttempt = 0;
 
 // parametri esperimento
 int numBalls = 22;
-float minDiameter = 23;
-float maxDiameter = 47;
+float minDiameter = 20;
+float maxDiameter = 45;
 
 boolean isTargetKnown = true;
 boolean sonification = true;
@@ -22,8 +22,8 @@ boolean bump = true;
 // fisica
 float spring = 0.15;
 float gravity = 0.01;
-float friction = -0.75;
-float speed = 0.15;
+float friction = -1;
+float speed = 0.12;
 
 // palline
 int solution;
@@ -58,6 +58,7 @@ float step = 256.0 / (numBalls + 1);
 
 
 void setup() {
+
   size(1300, 1000); 
 
   for (int i = 0; i < numTones; i++) {
@@ -198,7 +199,7 @@ class Ball {
   void doBump() {
     if (sonification && bump && (id == solution)) {
       bumper.stop();    
-      bumper.play(midiToFreq(34), 1);
+      bumper.play(midiToFreq(38), 1);
       env.play(bumper, 0.002, 0.04, 0.3, 0.2);
     }
   }
@@ -233,7 +234,6 @@ class Ball {
 
     // float delta = sqrt(mag(vx, vy)) * speed;
 
-
     vx += pow(vx * map(x, 0, widthDim, 0, 1), 1/3);
     vx -= pow(vx * map(widthDim - x, 0, widthDim, 0, 1), 1/3);
 
@@ -247,34 +247,34 @@ class Ball {
     x += vx;
     y += vy;
 
-    if ((int) random(300) == 0) {
+    if ((int) random(280) == 0) {
         vx *= random(friction / 1.5) * 1.5;
         vy *= random(friction / 1.5) * 1.5;
         doBump();
     }
     
 
-    float f = random(friction);
+    float f = random(friction * 0.75);
     
     if (x + diameter / 2 > widthDim) {
       x = widthDim - diameter / 2;
       vx *= f;
-      if (f < friction * 0.75) doBump();
+      //if (f < friction * 0.55) doBump();
     }
     else if (x - diameter / 2 < 0) {
       x = diameter / 2;
       vx *= f;
-      if (f < friction * 0.75) doBump();
+      //if (f < friction * 0.55) doBump();
     }
     if (y + diameter / 2 > height) {
       y = height - diameter / 2;
       vy *= f;
-      if (f < friction * 0.75) doBump();
+      //if (f < friction * 0.55) doBump();
     } 
     else if (y - diameter / 2 < 0) {
       y = diameter / 2;
       vy *= f;
-      if (f < friction * 0.75) doBump();
+      //if (f < friction * 0.55) doBump();
     }
   }
   
@@ -317,6 +317,7 @@ class Ball {
       rect(0, 0, sqsz, sqsz);
       fill(colorValue);
       rectMode(CENTER);
+      stroke(255, 255, 255, 220);
       rect(sqsz * 0.5, sqsz * 0.5, sqsz * 0.6, sqsz* 0.6);
       rectMode(CORNER);
       fill(160, 160, 160);
@@ -335,7 +336,7 @@ class Ball {
       float speedMag;
       for (int i = 0; i < numTones; i++) {
         speedMag = smoothing * mag(vx, vy) + (1 - smoothing) * oldSpeedMag;
-        offset = map(speedMag, 0, 1, 0, 1);
+        offset = map(speedMag, 0, 1.5, 0, 1);
         oldSpeedMag = speedMag;
         triWaves[i].freq(triFreq[i] * (1 + offset));
         filters[i].freq(map(pow(offset, 1/2), 0, 1, triFreq[0], 2 * triFreq[numTones - 1]));
@@ -367,17 +368,17 @@ void mousePressed() {
 
   // livello di sonification, 
   // tempo di completamento, 
+  // distanza colore, 
   // colore taget, 
   // colore selezionato, 
-  // distanza colore, 
   // dimensione target, 
   // dimensione cliccato
   results[currAttempt] = String.format("%c, %s, %d, %d, %d, %d, %d", 
       attempts.get(currAttempt), 
       str(time), 
+      dist,
       balls[solution].colorIndex, 
       pressedBall.colorIndex, 
-      dist,
       (int) balls[solution].diameter,
       (int) pressedBall.diameter);
       
@@ -428,6 +429,3 @@ float toneDetune(float tone, int detune) {
     return pow(2, (detune / 100.0)) * tone;
   }
 }
-
-
-// dovremmo fare prima con e poi senza soniification? alternare?
