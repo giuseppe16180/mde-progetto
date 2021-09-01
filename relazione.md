@@ -57,36 +57,30 @@ Abbiamo anche realizzato una variazione di questa sonificazione, che funziona es
 Il moto di ciascun punto è casuale, ma strutturato in modo che in un intervallo di tempo circoscritto ricalchi un movimento plausibile per un elemento in un bubble plot animato. I punti sono trattenuti all'interno del box, in caso di avvicinamento e contatto con i bordi la traiettoria è deviata per mantenere i punti entro i limiti. A queste variazioni di direzione non corrisponde un bump in quanto si tratta di variazioni artificiali che non si presentano nei bubble plot, la loro sonificazione potrebbe risultare fuorviante.
 
 
+## Partecipanti 
+
+Ai nostri esperimenti hanno preso parte 25 partecipanti (8 femmine e 17 maschi) con un'età media di 34 anni (range 26-46) con normali capacità di vista e udito. I partecipanti erano tutti nostri conoscenti. Non è stato fornito alcun compenso per la partecipazione allo studio.
+
 ## Esperimenti
 
-La sonification così descritta costituisce un livello del fattore sonification, partendo
+Ogni partecipante ha svolto la sua sessione in circostanze ambientali confrontabili, per quanto riguarda aspetti come illuminazione ambientale e rumore di fondo. Abbiamo utilizzato due computer portatili, entrambi con un monitor full hd da 14 pollici, utilizzando come dispositivo di puntamento un mouse esterno. Per la riproduzione sonora abbiamo impiegato gli altoparlanti integrati nei portatili, ci siamo accertati che entrambi riproducessero la banda di frequenze coinvolta in modo adeguato.
 
-Quindi, i livelli della variabile highlight sonoro sono:
+Ogni partecipante è stato sottoposto ad una sessione di tentativi, ciascuno dei quali in una scena diversa. Abbiamo chiesto ai partecipanti di provare ad individuare il target nel plot nel minor tempo possibile, cliccando con il cursore sul punto corrispondente. Il partecipante è informato del punto da ricercare grazie ad un ad un messaggio.
+
+Le diverse scene possono differire per il livello di sonification, infatti una scena può presentare o meno l'highlight sonoro del target. Alla luce di ciò, i livelli della variabile highlight sonoro sono:
+
+\vspace{-6pt}
 
 + nessuna sonification (n), 
 + sonification della velocità (s),
-+ sonification della velocità e dei cambi di direzione drastici (b). 
++ sonification della velocità e bump (b). 
 
-Ogni partecipante esegue lo stesso numero di tentativi per ciascun livello, anche se il loro ordine è casuale. Quest'aspetto è fondamentale per compensare gli effetti d'ordine. Inoltre bisogna considerare l'apprendimento, infatti è molto probabile che i partecipanti facciano sensibilmente peggio nei primi tentativi, per circoscrivere gli effetti del learning i partecipanti effettuano una sessione di allenamento preliminare, concretamente i primi XX tentativi comprendono uno stesso numero di trial per ciascuna modalità, sempre somministrati in ordine random, ma vengono esclusi dalla raccolta dei dati.
-
-
-
-
-
-
-## Partecipanti 
-
-Anim proident aute incididunt nulla cupidatat excepteur deserunt tempor amet consequat voluptate laborum. Ea irure dolore occaecat magna amet reprehenderit veniam aliqua ipsum cillum id Lorem pariatur. Excepteur in deserunt est quis veniam qui sint ea fugiat ad voluptate. Aliqua exercitation nulla et reprehenderit. Consectetur sunt quis id elit non incididunt culpa amet reprehenderit id officia nisi dolor duis. Ipsum duis dolor eiusmod ut sit minim minim. Occaecat reprehenderit sint et ex ipsum enim cillum ea irure.
-
-## Setup
-
-Ad un singolo partecipante viene chiesto di eseguire una serie di tentativi, ogni tentativo consiste in una scena diversa, e il task è quello di individuare il punto nel plot corrispondente ad un valore della leggenda, il partecipante è informato del punto da ricercare grazie ad un ad un messaggio. 
-
-Una volta individuato il punto target, viene chiesto ai partecipanti di cliccarlo con mouse. Le diverse scene possono differire per il livello di sonification, infatti una scena può presentare o meno l'highlight sonoro del target. 
+Ogni partecipante esegue XX tentativi per ciascun livello, per un totale di XX prove. Il livello di sonification presentato ad ogni trial  è casuale, quest'aspetto è fondamentale per compensare gli effetti d'ordine. Inoltre bisogna considerare l'apprendimento, infatti è molto probabile che i partecipanti facciano sensibilmente peggio nei primi tentativi, per circoscrivere gli effetti del learning i partecipanti effettuano una sessione di allenamento preliminare: primi XX tentativi comprendono uno stesso numero di trial per ciascuna modalità e vengono esclusi dalla raccolta dei dati.
 
 # Risultati 
 
-Reprehenderit minim amet esse commodo tempor et aliquip et sit. Veniam nostrud dolore sint cillum eiusmod exercitation consequat mollit culpa velit occaecat laborum qui. Proident elit ea veniam tempor elit minim anim non dolor eiusmod excepteur dolore adipisicing. Velit consectetur deserunt nulla dolor do consectetur irure incididunt commodo aliqua esse cillum. Laborum qui aliqua pariatur dolor et minim id cillum incididunt aliquip.
+
+
 
 # Considerazioni
 
