@@ -1,6 +1,6 @@
 import processing.sound.*;
 
-int tAttemptsForLevel = 3; // 3
+int tAttemptsForLevel = 0; // 3
 IntList tAttempts = new IntList();
 
 boolean isTraining = true;
@@ -16,7 +16,7 @@ String age = "a01";
 int currAttempt = 0;
 
 // parametri esperimento
-int numBalls = 22;
+int numBalls = 26;
 float minDiameter = 20;
 float maxDiameter = 45;
 
@@ -56,15 +56,15 @@ String[] results;
 
 int widthDim = 1000;
 
-int sqsz = 40;
+int sqsz = 36;
 
-float step = 256.0 / (numBalls + 1);
+float step = 256.0 / (numBalls - 1);
 
 
 
 void setup() {
 
-  size(1300, 1000); 
+  size(1250, 1000); 
 
   for (int i = 0; i < numTones; i++) {
     tones[i] += keyNote; 
@@ -174,7 +174,7 @@ void draw() {
   if (isTargetKnown) {
     pushMatrix();
       fill(0);
-      translate(widthDim + sqsz, height - 30);
+      translate(widthDim + sqsz, height - 15);
       textSize(20);
       text("Clicca sul valore " + solution, 0, 0);       
     popMatrix();
@@ -201,7 +201,8 @@ class Ball {
   boolean[] didBump;
 
   Ball(float x, float y, float diameter, int id, Ball[] others) {
-    this.colorIndex = (int) (step * (id + 1) + random(-step * 1/2, step * 1/2));
+    this.colorIndex = (int) (id * step);
+    //println(colorIndex);
     if (this.colorIndex < 0) this.colorIndex = 0;
     else if (this.colorIndex > 255) this.colorIndex = 255;
     this.colorValue = viridis[colorIndex];
