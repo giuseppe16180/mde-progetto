@@ -1,6 +1,6 @@
 import processing.sound.*;
 
-int tAttemptsForLevel = 0; // 3
+int tAttemptsForLevel = 3; // 3
 IntList tAttempts = new IntList();
 
 boolean isTraining = true;
@@ -9,7 +9,7 @@ int attemptsForLevel = 10; // 10
 IntList attempts = new IntList();
 
 String session = "s1";
-String participant = "p01";
+String participant = "p06";
 String age = "a01";
 
 
@@ -80,9 +80,9 @@ void setup() {
   tAttempts.shuffle();
 
   for (int i = 0; i < attemptsForLevel; i++) {
+    attempts.append('n');
     attempts.append('s');
-    attempts.append('s');
-    attempts.append('s');
+    attempts.append('b');
   }
   attempts.shuffle();
 
@@ -91,7 +91,7 @@ void setup() {
 }
 
 void storeResults() {
-  saveStrings(String.format("results/%s-%s-%s-%d\\%d\\%d-%d:%d", session, participant, age, 
+  saveStrings(String.format("results/%s-%s-%s-%d\\%d\\%d-%d:%d.csv", session, participant, age, 
                                             day(), month(), year(), hour(), minute()), results);
 }
 
