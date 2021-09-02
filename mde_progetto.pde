@@ -201,7 +201,7 @@ class Ball {
   boolean[] didBump;
 
   Ball(float x, float y, float diameter, int id, Ball[] others) {
-    this.colorIndex = (int) (id * step);
+    this.colorIndex = round(id * step); // FARE ARROTONDAMENTO
     //println(colorIndex);
     if (this.colorIndex < 0) this.colorIndex = 0;
     else if (this.colorIndex > 255) this.colorIndex = 255;
