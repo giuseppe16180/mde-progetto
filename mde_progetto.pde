@@ -1,6 +1,6 @@
 import processing.sound.*;
 
-int tAttemptsForLevel = 3; // 3
+int tAttemptsForLevel = 0; // 3
 IntList tAttempts = new IntList();
 
 boolean isTraining = true;

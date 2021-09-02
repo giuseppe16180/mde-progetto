@@ -1,5 +1,7 @@
 # %%
 
+import seaborn as sn
+from numpy.core.fromnumeric import size
 from statsmodels.stats.multicomp import (pairwise_tukeyhsd, MultiComparison)
 from statsmodels.formula.api import ols
 import statsmodels.api as sm
@@ -112,13 +114,14 @@ print(fvalue, pvalue)
 
 # %%
 MultiComp = MultiComparison(mean_sub['time'], mean_sub['sonification'])
-print(MultiComp.tukeyhsd().summary())
+# print(MultiComp.tukeyhsd().summary())
 comp = MultiComp.allpairtest(stats.ttest_rel, method='Bonferroni')
 print(comp[0])
 
 
 # %%
-mean_sonif['color_dist'].hist(figsize=(12, 8))
+mean_sonif['color_dist'].hist(
+    figsize=(12, 8), bins=30, color='c', edgecolor='k', alpha=0.65)
 # %%
 dist_mean = mean_sonif['color_dist']
 fvalue, pvalue = stats.f_oneway(dist_mean['n'], dist_mean['s'], dist_mean['b'])
@@ -126,9 +129,24 @@ print(fvalue, pvalue)
 
 # %%
 MultiComp = MultiComparison(mean_sub['color_dist'], mean_sub['sonification'])
-print(MultiComp.tukeyhsd().summary())
+# print(MultiComp.tukeyhsd().summary())
 comp = MultiComp.allpairtest(stats.ttest_rel, method='Bonferroni')
 print(comp[0])
+
+# %%
+
+toppa = df.copy()
+
+toppa['target_color'] = np.round(toppa['target_color'] / step).astype(int)
+toppa['clicked_color'] = np.round(toppa['clicked_color'] / step).astype(int)
+
+confusion_matrix = pd.crosstab(toppa['target_color'], toppa['clicked_color'], rownames=[
+                               'obiettivo'], colnames=['cliccato'], normalize='columns')
+
+# %%
+plt.figure(figsize=(15, 13))
+sn.heatmap(confusion_matrix, annot=False)
+plt.show()
 
 
 # %% time ~ C(sonification) alla R
