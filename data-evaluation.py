@@ -6,12 +6,24 @@ from statsmodels.stats.multicomp import (pairwise_tukeyhsd, MultiComparison)
 from statsmodels.formula.api import ols
 import statsmodels.api as sm
 import scipy.stats as stats
-import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import glob
-# %%
+
+import numpy as np
+import scipy.stats
+
+
+def mean_confidence_interval(data, confidence=0.95):
+    a = 1.0 * np.array(data)
+    n = len(a)
+    m, se = np.mean(a), scipy.stats.sem(a)
+    h = se * scipy.stats.t.ppf((1 + confidence) / 2., n-1)
+    return m, m-h, m+h
+
+# %% caricamento dataset
+
 
 files = glob.glob("dataset/*.csv")
 
@@ -22,6 +34,7 @@ for i, f in enumerate(files):
                                 'target_size', 'clicked_size'], header=None)
     csv['subject'] = i
     df = df.append(csv)
+
 
 # %% definizione stili plot
 plt.style.use('fivethirtyeight')
@@ -68,6 +81,26 @@ plt.bar(np.round(time_color['target_color'] / step), time_color['time'], align='
 mean_sub = df.groupby(['subject', 'sonification']).mean()[
     ['time', 'color_dist']].reset_index().copy()
 
+
+# %% medie per il tempo
+print('media tempo')
+print('n: ', mean_confidence_interval(
+    mean_sub[mean_sub['sonification'] == 'n']['time']))
+print('s: ', mean_confidence_interval(
+    mean_sub[mean_sub['sonification'] == 's']['time']))
+print('b: ', mean_confidence_interval(
+    mean_sub[mean_sub['sonification'] == 'b']['time']))
+
+# %% medie per l'accuratezza
+print('media colore')
+print('n: ', mean_confidence_interval(
+    mean_sub[mean_sub['sonification'] == 'n']['color_dist']))
+print('s: ', mean_confidence_interval(
+    mean_sub[mean_sub['sonification'] == 's']['color_dist']))
+print('b: ', mean_confidence_interval(
+    mean_sub[mean_sub['sonification'] == 'b']['color_dist']))
+
+
 # %% plot tempo medio dai partecipanti
 mean_sub.boxplot(figsize=(8, 6), by='sonification', column=['time'],
                  showmeans=True,
@@ -82,6 +115,7 @@ mean_sub.boxplot(figsize=(8, 6), by='sonification', column=['time'],
 plt.title('')
 plt.suptitle('')
 plt.show()
+
 
 # %% plot distanza colore medio dai partecipanti
 mean_sub.boxplot(figsize=(8, 6), by='sonification', column=['color_dist'],
@@ -98,43 +132,42 @@ plt.title('')
 plt.suptitle('')
 plt.show()
 
-# %%
 
+# %% riarrangiamento colonne e righe
 mean_sonif = mean_sub.pivot(index=['subject'], columns=[
                             'sonification']).reset_index().copy()
 
-# %%
+# %% plot istogramma dei tempi
 df.hist(figsize=(12, 8), by='sonification', column='time',
-        legend=True, bins=30, color='c', edgecolor='k', alpha=0.65)
+        legend=False, bins=30, color='c', edgecolor='k', alpha=0.65)
 
-# %%
+# %% test ANOVA per il tempo
 time_mean = mean_sonif['time']
 fvalue, pvalue = stats.f_oneway(time_mean['n'], time_mean['s'], time_mean['b'])
 print(fvalue, pvalue)
 
-# %%
+# %% test a coppie per il tempo
 MultiComp = MultiComparison(mean_sub['time'], mean_sub['sonification'])
 # print(MultiComp.tukeyhsd().summary())
 comp = MultiComp.allpairtest(stats.ttest_rel, method='Bonferroni')
 print(comp[0])
 
 
-# %%
+# %% plot istogramma errori
 mean_sonif['color_dist'].hist(
     figsize=(12, 8), bins=30, color='c', edgecolor='k', alpha=0.65)
-# %%
+# %% test ANOVA per gli errori
 dist_mean = mean_sonif['color_dist']
 fvalue, pvalue = stats.f_oneway(dist_mean['n'], dist_mean['s'], dist_mean['b'])
 print(fvalue, pvalue)
 
-# %%
+# %% test a coppie per gli errori
 MultiComp = MultiComparison(mean_sub['color_dist'], mean_sub['sonification'])
 # print(MultiComp.tukeyhsd().summary())
 comp = MultiComp.allpairtest(stats.ttest_rel, method='Bonferroni')
 print(comp[0])
 
-# %%
-
+# %% calcoloo della matrice di confusione
 toppa = df.copy()
 
 toppa['target_color'] = np.round(toppa['target_color'] / step).astype(int)
@@ -144,10 +177,13 @@ confusion_matrix = pd.crosstab(toppa['target_color'], toppa['clicked_color'], ro
                                'obiettivo'], colnames=['cliccato'], normalize='columns')
 
 # %%
-plt.figure(figsize=(15, 13))
+plt.figure(figsize=(7.5, 6))
 sn.heatmap(confusion_matrix, annot=False)
 plt.show()
 
+#########################################
+
+# Altro
 
 # %% time ~ C(sonification) alla R
 model = ols('time ~ C(sonification)', data=mean_sub).fit()

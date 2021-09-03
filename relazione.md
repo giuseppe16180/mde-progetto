@@ -34,7 +34,7 @@ Per trattare questa ipotesi abbiamo realizzato una simulazione di un bubble plot
 
 ## Rappresentazione visuale
 
-Per ciascuna scena simulata sono stati generati dei punti che si muovono all'interno di un'area quadrata. La dimensione di un punto è generata in modo casuale all'interno di un intervallo di valori, mentre il colore è ricavato dalla dalla mappa di colore Viridis. Ogni punto ha un colore unico preso tra i campioni della mappa di colore, ricavati selezionando dei valori ad intervalli equamente distanti. 
+Per ciascuna scena simulata sono stati generati dei punti che si muovono all'interno di un'area quadrata. La dimensione di un punto è generata in modo casuale all'interno di un intervallo di valori, mentre il colore è ricavato dalla mappa di colore Viridis a 256 valori. Ogni punto ha un colore unico preso tra i campioni della mappa di colore, ricavati selezionando dei valori ad intervalli equamente distanti. 
 
 ![Esempio di una scena](res/scena.png)
 
@@ -71,19 +71,60 @@ Le diverse scene possono differire per il livello di sonification, infatti una s
 
 \vspace{-6pt}
 
-+ nessuna sonification (n), 
-+ sonification della velocità (s),
-+ sonification della velocità e bump (b). 
++ nessuna sonification (\textbf{n}), 
++ sonification della velocità (\textbf{s}),
++ sonification della velocità e bump (\textbf{b}). 
 
-Ogni partecipante esegue XX tentativi per ciascun livello, per un totale di XX prove. Il livello di sonification presentato ad ogni trial  è casuale, quest'aspetto è fondamentale per compensare gli effetti d'ordine. Inoltre bisogna considerare l'apprendimento, infatti è molto probabile che i partecipanti facciano sensibilmente peggio nei primi tentativi, per circoscrivere gli effetti del learning i partecipanti effettuano una sessione di allenamento preliminare: primi XX tentativi comprendono uno stesso numero di trial per ciascuna modalità e vengono esclusi dalla raccolta dei dati.
+Ogni partecipante esegue XX tentativi per ciascun livello, per un totale di XX prove. Il livello di sonification presentato ad ogni trial è casuale, quest'aspetto è fondamentale per compensare gli effetti d'ordine. Inoltre bisogna considerare l'apprendimento, infatti è molto probabile che i partecipanti facciano sensibilmente peggio nei primi tentativi, per circoscrivere gli effetti del learning i partecipanti effettuano una sessione di allenamento preliminare: primi XX tentativi comprendono uno stesso numero di trial per ciascuna modalità e vengono esclusi dalla raccolta dei dati.
+
+Abbiamo chiesto ai partecipanti di fornire le risposte nel minor tempo possibile, per ogni risposta abbiamo tenuto traccia del livello di sonificazione, dell'accuratezza e del tempo di risposta, di taglia e colore per i due punti di interesse (il target e il selezionato). Per accuratezza intendiamo l'errore tra il colore del punto selezionato e quello del punto obiettivo, ossia la loro distanza nella scala Viridis. Dopodiché, per ciascun partecipante, abbiamo ricavato l'accuratezza media e il tempo medio per le tre condizione di test. Dato che l'accuratezza è calcolata con una misura di distanza, si ha accuratezza massima quando la distanza è pari a zero, ovvero quando si è selezionato correttamente l'obiettivo.
 
 # Risultati 
 
+## Accuratezza
 
+Qui di seguito riportiamo l'accuratezza media per ciascuna delle condizioni d'analisi, con i relativi intervalli di confidenza al 95%:
 
+\vspace{-6pt}
+
+- n: 5.88, [4.23, 7.34] 
+- s: 10.67, [8.23, 12.35] 
+- b: 12.40, [10.23, 14.44]
+    
+![Plot che evidenza le differenze tra le accuratezze per i tre livelli di sonification.](res/color_dist.pdf)
+
+Abbiamo verificato l'ipotesi di differenza nulla tra le medie utilizzando il test statistico ANOVA a misure ripetute, sul singolo fattore sonification. L'esito del test ci ha portato a rigettare l'ipotesi nulla, in quanto abbiamo ottenuto un p-value < 0.05. Facendo dei contronti a coppie con un t-test corretto con Bonferroni ha rivelato una differenza significativa tra ... e ....
+
+![Matrice di confusione del colore](res/confusion.png)
+
+## Tempo
+
+Qui di seguito riportiamo il tempo medio per ciascuna delle condizioni d'analisi, con i relativi intervalli di confidenza al 95%:
+
+\vspace{-6pt}
+
+- n: 5.88, [4.23, 7.34] 
+- s: 10.67, [8.23, 12.35] 
+- b: 12.40, [10.23, 14.44]
+
+![Plot che evidenza le differenze nei tempi di esecuzione per i tre livelli di sonification.](res/time.pdf)
+
+Abbiamo eseguito lo stesso test di prima per verificare la rigettibilità dell'ipotesi nulla di nessuna differenza tra i tempi di esecuzione, il test ha restituito un p-value < 0.05, il che ci porta a dire che possiamo rigettare l'ipotesi nulla. Dai confronti a coppie si nota che esiste una differenza significativa tra ... e ..., e tra ... e ....
+
+<!--
+![Istogramma dei tempi per sonificazione](res/time_hist.pdf)
+-->
+
+![Istogramma dei tempi per colore](res/time_color.png)
 
 # Considerazioni
 
 Duis exercitation nostrud tempor nisi magna consectetur anim. Pariatur fugiat voluptate consectetur ea eu dolor excepteur. Voluptate tempor aliquip reprehenderit non minim laborum Lorem ad est irure qui consequat esse. Velit aliquip exercitation amet ex. Officia veniam ullamco labore quis culpa adipisicing minim in veniam magna ullamco no.
 
 # Fonti 
+
+1. Materiale didattico del corso Multisensory and Data Exploration - Davide Rocchesso a.a. 20/21
+2. Niklas Rönnberg - Musical sonification supports visual discrimination of color intensity
+3. Niklas Rönnberg - Sonification supports perception of brightness contrast
+4. Hans Rosling 
+

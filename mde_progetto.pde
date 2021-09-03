@@ -16,7 +16,7 @@ String age = "a01";
 int currAttempt = 0;
 
 // parametri esperimento
-int numBalls = 26;
+int numBalls = 27;
 float minDiameter = 20;
 float maxDiameter = 45;
 
@@ -56,7 +56,7 @@ String[] results;
 
 int widthDim = 1000;
 
-int sqsz = 36;
+int sqsz = 34;
 
 float step = 256.0 / (numBalls - 1);
 
@@ -201,11 +201,9 @@ class Ball {
   boolean[] didBump;
 
   Ball(float x, float y, float diameter, int id, Ball[] others) {
-    this.colorIndex = round(id * step); // FARE ARROTONDAMENTO
+    this.colorIndex = id; // FARE ARROTONDAMENTO
     //println(colorIndex);
-    if (this.colorIndex < 0) this.colorIndex = 0;
-    else if (this.colorIndex > 255) this.colorIndex = 255;
-    this.colorValue = viridis[colorIndex];
+    this.colorValue = viridis[id];
     this.x = x;
     this.y = y;
     this.vx = 10 * random(-speed, speed);
@@ -365,9 +363,9 @@ void stopOscs() {
 }
 
 void loadViridis() {
-  viridis = new color[256];
+  viridis = new color[numBalls];
   String[] stringColors = loadStrings("viridis.txt");
-  for (int i = 0; i < 256; i++) {
+  for (int i = 0; i < numBalls; i++) {
     viridis[i] = unhex(stringColors[i]) | 0xff000000;
   }
 }
