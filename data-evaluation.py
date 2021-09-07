@@ -32,7 +32,7 @@ for i, f in enumerate(files):
     csv = pd.read_csv(f, names=['sonification', 'time', 'color_dist',
                                 'target_color', 'clicked_color',
                                 'target_size', 'clicked_size'], header=None)
-    csv['subject'] = i
+    csv['subject'] = f
     df = df.append(csv)
 
 # %%
@@ -71,14 +71,14 @@ position = [2, 0, 1]
 
 
 # %% tempo di esecuzione in base al colore
-my_cmap = plt.get_cmap("viridis")
+my_cmap = plt.get_cmap("viridis", 27)
 
 time_color = df[df["color_dist"] == 0].groupby(
     "target_color").mean().reset_index()[['target_color', 'time']]
 
 plt.figure(figsize=(8, 6))
 plt.bar(np.round(time_color['target_color']), time_color['time'], align='center', width=0.9,
-        color=my_cmap(time_color['target_color'] / 25))
+        color=my_cmap(time_color['target_color']))
 
 
 # %% calcolo medie per partecipanti di tempo e distanza
@@ -174,8 +174,8 @@ print(comp[0])
 # %% calcoloo della matrice di confusione
 toppa = df.copy()
 
-toppa['target_color'] = np.round(toppa['target_color']).astype(int)
-toppa['clicked_color'] = np.round(toppa['clicked_color']).astype(int)
+#toppa['target_color'] = np.round(toppa['target_color']).astype(int)
+#toppa['clicked_color'] = np.round(toppa['clicked_color']).astype(int)
 
 confusion_matrix = pd.crosstab(toppa['target_color'], toppa['clicked_color'], rownames=[
                                'obiettivo'], colnames=['cliccato'], normalize='columns')
@@ -192,6 +192,11 @@ plt.show()
 #########################################
 #########################################
 #########################################
+
+
+#%% ricerca outliers
+mean_for_subject = mean_sub.groupby(['subject', 'sonification']).mean()
+
 
 
 # Altro
