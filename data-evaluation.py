@@ -25,7 +25,7 @@ def mean_confidence_interval(data, confidence=0.95):
 # %% caricamento dataset
 
 
-files = glob.glob("dataset/*.csv")
+files = glob.glob("results/*.csv")
 
 df = pd.DataFrame()
 for i, f in enumerate(files):
@@ -35,7 +35,13 @@ for i, f in enumerate(files):
     csv['subject'] = i
     df = df.append(csv)
 
+# %%
 
+df
+# %%
+df = df[df['time'] >= 1.0]
+
+df
 # %% definizione stili plot
 plt.style.use('fivethirtyeight')
 
@@ -70,11 +76,9 @@ my_cmap = plt.get_cmap("viridis")
 time_color = df[df["color_dist"] == 0].groupby(
     "target_color").mean().reset_index()[['target_color', 'time']]
 
-step = 256 / 25
-
 plt.figure(figsize=(8, 6))
-plt.bar(np.round(time_color['target_color'] / step), time_color['time'], align='center', width=0.9,
-        color=my_cmap(time_color['target_color']))
+plt.bar(np.round(time_color['target_color']), time_color['time'], align='center', width=0.9,
+        color=my_cmap(time_color['target_color'] / 25))
 
 
 # %% calcolo medie per partecipanti di tempo e distanza
@@ -170,8 +174,8 @@ print(comp[0])
 # %% calcoloo della matrice di confusione
 toppa = df.copy()
 
-toppa['target_color'] = np.round(toppa['target_color'] / step).astype(int)
-toppa['clicked_color'] = np.round(toppa['clicked_color'] / step).astype(int)
+toppa['target_color'] = np.round(toppa['target_color']).astype(int)
+toppa['clicked_color'] = np.round(toppa['clicked_color']).astype(int)
 
 confusion_matrix = pd.crosstab(toppa['target_color'], toppa['clicked_color'], rownames=[
                                'obiettivo'], colnames=['cliccato'], normalize='columns')
@@ -182,6 +186,13 @@ sn.heatmap(confusion_matrix, annot=False)
 plt.show()
 
 #########################################
+#########################################
+#########################################
+#########################################
+#########################################
+#########################################
+#########################################
+
 
 # Altro
 
@@ -258,3 +269,9 @@ errors.boxplot(figsize=(8, 6), by='sonification', column=['pref_big'],
                medianprops=medianprops,
                flierprops=flierprops,
                capprops=capprops, positions=[2, 0, 1])
+
+# %%
+
+# %%
+
+# %%
