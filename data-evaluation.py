@@ -1,5 +1,6 @@
 # %%
 
+from os import error
 import seaborn as sn
 from numpy.core.fromnumeric import size
 from statsmodels.stats.multicomp import (pairwise_tukeyhsd, MultiComparison)
@@ -46,12 +47,13 @@ df
 plt.style.use('fivethirtyeight')
 
 meanprops = {'marker': 'o',
-             'markerfacecolor': 'black',
+
+             'markerfacecolor': 'orange',
              'markeredgecolor': 'black',
              'markersize': 5.0,
              'linewidth': 2.5}
 
-boxprops = {'color': 'black',
+boxprops = {'color': 'black', 'facecolor': 'white',
             'linewidth': 1}
 
 whiskerprops = {'linewidth': 1}
@@ -61,13 +63,15 @@ medianprops = {'linestyle': '-',
                'color': 'black'}
 
 flierprops = {'marker': 'o',
-              'markerfacecolor': 'black',
-              'markersize': 1,
+              'markerfacecolor': 'white',
+              'markersize': 4,
               'markeredgecolor': 'black'}
 
 capprops = {'linewidth': 1}
 
 position = [2, 0, 1]
+
+
 
 
 # %% tempo di esecuzione in base al colore
@@ -84,6 +88,8 @@ plt.bar(np.round(time_color['target_color']), time_color['time'], align='center'
 # %% calcolo medie per partecipanti di tempo e distanza
 mean_sub = df.groupby(['subject', 'sonification']).mean()[
     ['time', 'color_dist']].reset_index().copy()
+
+
 
 
 # %% medie per il tempo
@@ -105,10 +111,18 @@ print('b: ', mean_confidence_interval(
     mean_sub[mean_sub['sonification'] == 'b']['color_dist']))
 
 
+
+
 # %% plot tempo medio dai partecipanti
-mean_sub.boxplot(figsize=(8, 6), by='sonification', column=['time'],
+
+fig, axes = plt.subplots(ncols=2)
+
+fig.set_size_inches(8, 6)
+
+mean_sub.boxplot(ax=axes[0], by='sonification', column=['time'],
+                 patch_artist=True,
                  showmeans=True,
-                 showfliers=False,
+                 showfliers=True,
                  meanprops=meanprops,
                  boxprops=boxprops,
                  whiskerprops=whiskerprops,
@@ -116,15 +130,12 @@ mean_sub.boxplot(figsize=(8, 6), by='sonification', column=['time'],
                  flierprops=flierprops,
                  capprops=capprops,
                  positions=position)
-plt.title('')
-plt.suptitle('')
-plt.show()
 
-
-# %% plot distanza colore medio dai partecipanti
-mean_sub.boxplot(figsize=(8, 6), by='sonification', column=['color_dist'],
+# plot distanza colore medio dai partecipanti
+mean_sub.boxplot(ax=axes[1], by='sonification', column=['color_dist'],
+                 patch_artist=True,
                  showmeans=True,
-                 showfliers=False,
+                 showfliers=True,
                  meanprops=meanprops,
                  boxprops=boxprops,
                  whiskerprops=whiskerprops,
@@ -132,7 +143,7 @@ mean_sub.boxplot(figsize=(8, 6), by='sonification', column=['color_dist'],
                  flierprops=flierprops,
                  capprops=capprops,
                  positions=position)
-plt.title('')
+
 plt.suptitle('')
 plt.show()
 
@@ -159,7 +170,7 @@ print(comp[0])
 
 # %% plot istogramma errori
 mean_sonif['color_dist'].hist(
-    figsize=(12, 8), bins=30, color='c', edgecolor='k', alpha=0.65)
+    figsize=(12, 8), bins=10, color='c', edgecolor='k', alpha=0.65)
 # %% test ANOVA per gli errori
 dist_mean = mean_sonif['color_dist']
 fvalue, pvalue = stats.f_oneway(dist_mean['n'], dist_mean['s'], dist_mean['b'])
@@ -185,6 +196,20 @@ plt.figure(figsize=(7.5, 6))
 sn.heatmap(confusion_matrix, annot=False)
 plt.show()
 
+
+
+#%% confusione taglie
+
+confusion_matrix = pd.crosstab(df['target_size'], df['clicked_size'], rownames=[
+                               'obiettivo'], colnames=['cliccato'], normalize='columns')
+
+plt.figure(figsize=(7.5, 6))
+sn.heatmap(confusion_matrix, annot=False)
+plt.show()
+
+
+
+
 #########################################
 #########################################
 #########################################
@@ -196,6 +221,8 @@ plt.show()
 
 #%% ricerca outliers
 mean_for_subject = mean_sub.groupby(['subject', 'sonification']).mean()
+
+mean_for_subject
 
 
 
@@ -211,72 +238,112 @@ model = ols('color_dist ~ C(sonification)', data=mean_sub).fit()
 anova_table = sm.stats.anova_lm(model, typ=2)
 anova_table
 
-# %%
-
-
-# %%
-# res.anova_std_residuals are standardized residuals obtained from ANOVA (check above) sm.qqplot(res.anova_std_residuals, line='45')
-plt.xlabel("Theoretical Quantiles")
-plt.ylabel("Standardized Residuals")
-plt.show()
-# histogram
-plt.hist(res.anova_model_out.resid, bins='auto', histtype='bar', ec='k') plt.xlabel("Residuals")
-plt.ylabel('Frequency')
-plt.show()
-
-
-# %%
-corect = df[df['color_dist'] == 0]
-corect.groupby(corect['sonification'])['time'].median().head()
-
-# %%
-df[['sonification', 'time']].groupby('sonification').describe()
-
-
-# %% plot della distanza colore in base alla sonification
-
-df.boxplot(figsize=(8, 6), by='sonification', column=['color_dist'],
-           showmeans=True,
-           showfliers=True,
-           meanprops=meanprops,
-           boxprops=boxprops,
-           whiskerprops=whiskerprops,
-           medianprops=medianprops,
-           flierprops=flierprops,
-           capprops=capprops,
-           positions=position)
-
-# %% plot del tempo in base alla sonification
-plot = df.boxplot(figsize=(8, 6), by='sonification', column=['time'],
-                  showmeans=True,
-                  showfliers=True,
-                  meanprops=meanprops,
-                  boxprops=boxprops,
-                  whiskerprops=whiskerprops,
-                  medianprops=medianprops,
-                  flierprops=flierprops,
-                  capprops=capprops,
-                  positions=position)
-
 
 # %% effetti della dimensione
-errors = df[df["color_dist"] != 0].copy()
-errors['pref_big'] = errors["target_size"] - errors['clicked_size']
+print(df[df['color_dist'] != 0].count())
 
-#errors.groupby(errors['pref_big'] < 0)['color_dist'].count().plot.bar()
+errors = df[df['target_size'] != df['clicked_size']].copy()
 
-errors.boxplot(figsize=(8, 6), by='sonification', column=['pref_big'],
-               showmeans=True,
-               showfliers=True,
-               meanprops=meanprops,
-               boxprops=boxprops,
-               whiskerprops=whiskerprops,
-               medianprops=medianprops,
-               flierprops=flierprops,
-               capprops=capprops, positions=[2, 0, 1])
 
+errors['size_big'] = np.where(errors['clicked_size'] > errors["target_size"] , 1, 0)
+errors['size_sma'] = np.where(errors['clicked_size'] < errors["target_size"] , 1, 0)
+
+errors.sum()[['size_big', 'size_sma']].plot.bar() #prendere size big, size small
+errors.sum()
+#%%
+
+errors = errors.groupby('subject').mean()[['size_big', 'size_sma']].reset_index()
+
+
+errors = errors.sort_values(by=['size_big'])
+#%%
+labels = np.arange(errors.count()[0])
+big = errors['size_big']
+small = errors['size_sma']
+width = 0.8       # the width of the bars: can also be len(x) sequence
+
+fig, ax = plt.subplots(figsize=(8, 6))
+
+ax.bar(labels, big, width, label='Più piccoli')
+ax.bar(labels, small, width, bottom=big,
+       label='Più grandi')
+
+ax.set_ylabel('Preferenza')
+ax.set_title('Preferenza di dimensione in caso di errore')
+ax.legend()
+
+ax.plot([0.05, 0.95], [0, 0.95], transform=ax.transAxes, color='k', linestyle='--', linewidth=1)
+plt.show()
 # %%
 
-# %%
 
+taglia = df.copy()
+
+def get_size(value):
+    if (value >= 20 and value < 28):
+        return 'small'
+    elif (value >= 28 and value < 36):
+        return 'medium'
+    elif (value >= 36 and value < 45):
+        return 'big'
+
+taglia['size'] = taglia['target_size'].apply(get_size)
+
+taglia = taglia.groupby(['subject', 'size']).mean()[
+    ['time', 'color_dist']].reset_index().copy()
+
+fig, axes = plt.subplots(ncols=2)
+
+fig.set_size_inches(8, 6)
+
+taglia.boxplot(ax=axes[0], by='size', column=['color_dist'],
+                 showmeans=True,
+                 patch_artist=True,
+                 showfliers=True,
+                 meanprops=meanprops,
+                 boxprops=boxprops,
+                 whiskerprops=whiskerprops,
+                 medianprops=medianprops,
+                 flierprops=flierprops,
+                 capprops=capprops)
+
+taglia.boxplot(ax=axes[1], by='size', column=['time'],
+                 showmeans=True,
+                 patch_artist=True,
+                 showfliers=True,
+                 meanprops=meanprops,
+                 boxprops=boxprops,
+                 whiskerprops=whiskerprops,
+                 medianprops=medianprops,
+                 flierprops=flierprops,
+                 capprops=capprops)
+
+plt.suptitle('')
+plt.show()
+
+print('media tempo')
+print('small: ', mean_confidence_interval(
+    taglia[taglia['size'] == 'small']['time']))
+print('medium: ', mean_confidence_interval(
+    taglia[taglia['size'] == 'medium']['time']))
+print('big: ', mean_confidence_interval(
+    taglia[taglia['size'] == 'big']['time']))
+
+print('media colore')
+print('big: ', mean_confidence_interval(
+    taglia[taglia['size'] == 'small']['color_dist']))
+print('medium: ', mean_confidence_interval(
+    taglia[taglia['size'] == 'medium']['color_dist']))
+print('small: ', mean_confidence_interval(
+    taglia[taglia['size'] == 'big']['color_dist']))
+
+taglia = taglia.pivot(index=['subject'], columns=['size']).reset_index().copy()
+
+cd = taglia['color_dist']
+fvalue, pvalue = stats.f_oneway(cd['small'], cd['medium'], cd['big'])
+print('color_dist', fvalue, pvalue)
+
+tm = taglia['time']
+fvalue, pvalue = stats.f_oneway(tm['small'], tm['medium'], tm['big'])
+print('time', fvalue, pvalue)
 # %%

@@ -1,5 +1,5 @@
 ---
-title: "Sonificazione dei pallini :)"
+title: "Simulazione bubble plot animati con sonificazione"
 subtitle: Progetto Multisensory and Data Exploration \vspace{0.5cm}
 author: 
 - Cristina Zappata
@@ -20,7 +20,11 @@ numbersections: true
 
 # Introduzione
 
-La visualizzazione è un aspetto fondamentale quando si vogliono presentare dei dati ad un pubblico al fine di comunicare delle relazioni complesse in modo semplice. Hans Rosling fu un pioniere della data visualization, nelle sue presentazioni era solito usare delle rappresentazioni animate per rappresentare questioni legate allo sviluppo umano nei Paesi del mondo. Nel fare ciò era solito utilizzare dei bubble plot animati nel tempo. 
+La visualizzazione è un aspetto fondamentale quando si vogliono presentare dei dati ad un pubblico al fine di comunicare delle relazioni complesse in modo semplice. Hans Rosling fu un pioniere della data visualization, nelle sue presentazioni era solito usare delle rappresentazioni animate per rappresentare questioni legate allo sviluppo umano nei Paesi del mondo. Nel fare ciò era solito utilizzare dei bubble plot animati nel tempo.
+
+**Tra le varie rappresentazioni possibili vi sono i bubble plot, dove i dati sono rappresentati da dei punti, anche di varia dimensione, e sono posizionati su un piano cartesiano. Per ogni punto si rappresentano 3 variabili: una è rappresentata dall'asse X, una dall'asse Y e una dalla dimensione del punto. I bubble plot possono essere anche animati e quindi rappresentare le variazioni delle variabili in funzione del tempo.**
+
+**Hans Rosling fu un pioniere della data visualization, nelle sue presentazioni era solito usare proprio i bubble blot per rappresentare questioni legate allo sviluppo umano nei Paesi del mondo.**
 
 In un bubble plot si visualizza una collezione di dati utilizzando un piano cartesiano: in esso vengono collocati dei punti, per ciascuno di essi la posizione sull'asse orizzontale è determinata da una variabile, così come la posizione sull'asse verticale, altre variabili vengono rappresentate usando le dimensioni colore e taglia dei punti. Per rappresentare le variabili in funzione del tempo risulta pratico ed efficace realizzare dei bubble plot animati, dove frame dopo frame si mostra la progressione dei dati al variare del tempo.
 
@@ -30,7 +34,7 @@ In questo progetto abbiamo investigato i possibili vantaggi provenienti dall'imp
 
 # Metodo
 
-Per trattare questa ipotesi abbiamo realizzato una simulazione in Processing di un bubble plot animato, con la possibilità di riprodurre un highlight sonoro (i dettagli implementativi verranno discussi in seguito). Le scene realizzate con questa simulazione sono state impiegate per svolgere degli esperimenti con dei soggetti, al fine di valutare gli effetti della sonification.
+Per trattare questa ipotesi abbiamo realizzato una simulazione in Processing di un bubble plot animato, con la possibilità di riprodurre un highlight sonoro (i dettagli implementativi verranno discussi in seguito). Le scene realizzate con questa simulazione sono state impiegate per svolgere degli esperimenti con dei soggetti, al fine di valutare gli effetti della sonification nell'individuazione di un punto obiettivo.
 
 ## Rappresentazione visuale
 
@@ -38,9 +42,9 @@ Per ciascuna scena simulata sono stati generati dei punti che si muovono all'int
 
 ![Esempio di una scena](res/scena.png)
 
-La scelta della scala Viridis è stata dettata principalmente dalle sue caratteristiche: robustezza, uniformità e popolarità. Il numero dei punti (e di conseguenza dei colori), è stato scelto in modo da rendere non immediata la distinzione dei punti dal colore simile. Abbiamo impiegato un numero di campioni superiore a quello che normalmente consente una distinzione chiara anche su dei glifi piccoli, così facendo abbiamo coinvolto un numero di livelli sufficiente ad introdurre una certa confusione tra i colori, pur permettendo la discriminazione dell'obiettivo confrontando i soli colori. Dopo un certo numero di prove preliminari abbiamo individuato in 27 punti un buon compromesso.
+La scelta della scala Viridis è stata dettata principalmente dalle sue caratteristiche: robustezza, uniformità e popolarità. Il numero dei punti (e di conseguenza dei colori) è stato scelto in modo da rendere non immediata la distinzione dei punti dal colore simile. Abbiamo impiegato un numero di campioni superiore a quello che normalmente consente una distinzione chiara anche su dei glifi piccoli, così facendo abbiamo coinvolto un numero di livelli sufficiente ad introdurre una certa confusione tra i colori, pur permettendo la discriminazione dell'obiettivo confrontando i soli colori. Dopo un certo numero di prove preliminari abbiamo individuato in 27 punti un buon compromesso.
 
-Per simulare quanto accade nei bubble plot, abbiamo affiancato all'area quadrata una leggenda. In questa è resa nota la corrispondenza per ogni punto tra la sua etichetta ed il suo colore. Le etichette consistono di semplici numeri incrementali che partono da zero, mentre i colori corrispondono alla sequenza dei campioni ricavati dalla mappa di colore.
+Per simulare quanto accade nei bubble plot, abbiamo affiancato all'area quadrata una leggenda. In questa è resa nota la corrispondenza tra l'etichetta ed il colore. Le etichette consistono di semplici numeri incrementali che partono da zero, mentre i colori corrispondono alla sequenza dei campioni ricavati dalla mappa di colore.
 
 Per ogni scena è estratto in maniera random un punto che funge da target, ovvero il punto sul quale vorremmo che sia rivolta l'attenzione. Esso è reso noto tramite un'istruzione posta sotto la leggenda.
 
@@ -63,7 +67,7 @@ Ai nostri esperimenti hanno preso parte XX partecipanti (X femmine e XX maschi) 
 
 ## Esperimenti
 
-Ogni partecipante ha svolto la sua sessione in circostanze ambientali confrontabili, per quanto riguarda aspetti come illuminazione ambientale e rumore di fondo. Abbiamo utilizzato due computer portatili, entrambi con un monitor full hd da 14 pollici, utilizzando come dispositivo di puntamento un mouse esterno. Per la riproduzione sonora abbiamo impiegato gli altoparlanti integrati nei portatili, ci siamo accertati che entrambi riproducessero la banda di frequenze coinvolta in modo adeguato.
+Ogni partecipante ha svolto la sua sessione in circostanze ambientali confrontabili, per quanto riguarda aspetti come illuminazione ambientale e rumore di fondo. Abbiamo utilizzato due diversi computer portatili, entrambi con un monitor full hd da 14 pollici, utilizzando come dispositivo di puntamento un mouse esterno. Per la riproduzione sonora abbiamo impiegato gli altoparlanti integrati nei portatili, ci siamo accertati che entrambi riproducessero la banda di frequenze coinvolta in modo adeguato.
 
 Ogni partecipante è stato sottoposto ad una sessione fatta da più tentativi, ciascuno dei quali in una scena diversa. Abbiamo chiesto ai partecipanti di provare ad individuare il target nel minor tempo possibile, cliccando con il cursore sul punto corrispondente.
 
@@ -80,6 +84,18 @@ Ogni partecipante esegue 12 tentativi per ciascun livello, per un totale di 39 p
 Abbiamo chiesto ai partecipanti di fornire le risposte nel minor tempo possibile, per ogni risposta abbiamo tenuto traccia del livello di sonificazione, dell'accuratezza e del tempo di risposta, di taglia e colore per i due punti di interesse (il target e il selezionato). Per accuratezza intendiamo l'errore tra il colore del punto selezionato e quello del punto obiettivo, ossia la loro distanza nella scala Viridis. Dopodiché, per ciascun partecipante, abbiamo ricavato l'accuratezza media e il tempo medio per le tre condizione di test. Dato che l'accuratezza è calcolata con una misura di distanza, si ha accuratezza massima quando la distanza è pari a zero, ovvero quando si è selezionato correttamente l'obiettivo.
 
 # Risultati 
+
+Una volta completata la fase sperimentale siamo passati all'analisi dei risultati ottenuti. L'aspetto più interessante è certamente quello dovuto ai possibili vantaggi della sonificazione, tuttavia abbiamo investigato pure possibili effetti dovuti alla mappa di colore e alla dimensione dei punti
+
+## Dimensione
+
+Come è noto, taglia e colore sono due dimensioni visuali separabili e proprio per questo il loro utilizzo si addice ai bubble plot. Tuttavia noi abbiamo voluto verificare se la taglia dei cerchi impattasse nella capacità di discriminare i colori. Abbiamo suddiviso i punti in tre gruppi: small, medium e big, e per ciascun partecipante abbiamo ricavato tempo di esecuzione e accuratezza media per ciascuna classe di dimensione. Nonostante i dati sperimentali sembrino essere a favore dei cerchi di taglia media, i test statistici non ci hanno permesso di rigettare l'ipotesi nulla di nessuna differenza tra le medie. (valori)
+
+Abbiamo provato a ricercare ulteriori relazioni tra accuratezza e taglia dei punti, ci siamo chiesti se in caso di errore fosse più frequente la predilezione di punti grandi su punti piccoli o viceversa. Dai nostri dati è emerso che su 163 errori, 85 volte si è stato prediletto un punto più grande e 70 volte un punto più piccolo (nei restati errori la taglia era uguale).
+
+Abbiamo rappresentato la predilezione per ogni partecipante, l'andamento non sembra presentare particolari anomalie tali da giustificare analisi più accurate.
+
+![Predilezione di taglia in caso di errore per partecipante](res/color_dist.pdf)
 
 ## Accuratezza
 
@@ -98,7 +114,7 @@ Abbiamo verificato l'ipotesi di differenza nulla tra le medie utilizzando il tes
 
 ## Tempo
 
-Qui di seguito riportiamo il tempo medio per ciascuna delle condizioni d'analisi, con i relativi intervalli di confidenza al 95%:
+Qui di seguito riportiamo il tempo medio in secondi per ciascuna delle condizioni d'analisi, con i relativi intervalli di confidenza al 95%:
 
 \vspace{-6pt}
 
@@ -116,19 +132,22 @@ Abbiamo eseguito lo stesso test di prima per verificare la rigettibilità dell'i
 
 ## Colore
 
-Abbiamo pensato che potesse esistere qualche effetto in funzione del colore dei punti, effettivamente
+Abbiamo pensato che potesse esistere qualche effetto in funzione del colore dei punti. Tramite una matrice di confusione ci siamo resi conto che gli unici colori un po' più distinguibili sono quelli più brillanti, mentre la massima confusione è per i colori centrali. Questa osservazione è sostenuta anche dai tempi medi di individuazione corretta per i vari punti, dove si nota che il tempo è più alto per dei colori nella regione centrale, mentre è più basso per gli estremi. Anche se dei tempi medi nei livelli centrali ci fanno pensare che queste differenze possano essere dovute al caso.
 
-![Istogramma dei tempi per colore](res/time_color.png)
+![Istogramma dei tempi in secondi per colore](res/time_color.png)
 
 ![Matrice di confusione del colore](res/confusion.png)
 
 ## Taglia
 
 
-
 # Considerazioni
 
-Duis exercitation nostrud tempor nisi magna consectetur anim. Pariatur fugiat voluptate consectetur ea eu dolor excepteur. Voluptate tempor aliquip reprehenderit non minim laborum Lorem ad est irure qui consequat esse. Velit aliquip exercitation amet ex. Officia veniam ullamco labore quis culpa adipisicing minim in veniam magna ullamco no.
+Non abbiamo somministrato degli effettivi questionari ai nostri partecipanti, ma abbiamo raccolto alcune loro considerazioni, tra queste abbiamo che due partecipanti hanno trovato la sonificazione con il bump controproducente, perché il rimbalzo risultava più una sorgente di distrazione che di aiuto. Questo potrebbe giustificare il leggero peggioramento nel caso \textbf{b} rispetto che al \textbf{s}, ma i dati non sono sufficienti per affrontare questa analisi.
+
+Inoltre quasi tutti i partecipanti hanno ritenuto sgradevole la sonificazione della velocità mentre pochi hanno sottolineato il vantaggio percepito dall'impiego della sonificazione. Questo potrebbe farci pensare che ad un suono migliore possano corrispondere delle prestazioni migliori.
+
+
 
 # Fonti 
 
