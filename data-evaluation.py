@@ -37,14 +37,10 @@ for i, f in enumerate(files):
     df = df.append(csv)
 
 # %%
-
-df
-# %%
 df = df[df['time'] >= 1.0]
 
-df
 # %% definizione stili plot
-plt.style.use('fivethirtyeight')
+plt.style.use('ggplot')
 
 meanprops = {'marker': 'o',
 
@@ -72,24 +68,24 @@ capprops = {'linewidth': 1}
 position = [2, 0, 1]
 
 
-
-
 # %% tempo di esecuzione in base al colore
 my_cmap = plt.get_cmap("viridis", 27)
 
 time_color = df[df["color_dist"] == 0].groupby(
     "target_color").mean().reset_index()[['target_color', 'time']]
 
-plt.figure(figsize=(8, 6))
-plt.bar(np.round(time_color['target_color']), time_color['time'], align='center', width=0.9,
+plt.figure(figsize=(6, 4))
+plt.bar(np.round(time_color['target_color']), time_color['time'], align='center', edgecolor='w', width=0.85,
         color=my_cmap(time_color['target_color']))
+plt.xlim([-0.5, 26.5])
+plt.xlabel('punto')
+plt.ylabel('tempo')
+plt.savefig('res/time_color.pdf', bbox_inches='tight')
 
 
 # %% calcolo medie per partecipanti di tempo e distanza
 mean_sub = df.groupby(['subject', 'sonification']).mean()[
     ['time', 'color_dist']].reset_index().copy()
-
-
 
 
 # %% medie per il tempo
@@ -109,8 +105,6 @@ print('s: ', mean_confidence_interval(
     mean_sub[mean_sub['sonification'] == 's']['color_dist']))
 print('b: ', mean_confidence_interval(
     mean_sub[mean_sub['sonification'] == 'b']['color_dist']))
-
-
 
 
 # %% plot tempo medio dai partecipanti
@@ -147,6 +141,48 @@ mean_sub.boxplot(ax=axes[1], by='sonification', column=['color_dist'],
 plt.suptitle('')
 plt.show()
 
+
+# %% PLOT DI MEDIA MINIMO MASSIMO E VARIANZA IN BASE ALLA SIZE
+
+describe = mean_sub.groupby(
+    'sonification').describe().reset_index().reindex([1, 2, 0])
+
+fig, axes = plt.subplots(ncols=2)
+
+fig.set_size_inches(6, 4)
+
+labels = describe['sonification']
+
+mins = describe['time']['min']
+maxes = describe['time']['max']
+means = describe['time']['mean']
+std = describe['time']['std']
+
+# create stacked errorbars:
+axes[0].set_title("tempo")
+axes[0].errorbar(labels, means, [means - mins, maxes - means],
+                 fmt='+k', ecolor='black', lw=1)
+axes[0].errorbar(labels, means, std, fmt='+k', ecolor='orange', lw=25)
+axes[0].set_xlim(-0.75, 2.75)
+
+#####
+
+labels = describe['sonification']
+
+mins = describe['color_dist']['min']
+maxes = describe['color_dist']['max']
+means = describe['color_dist']['mean']
+std = describe['color_dist']['std']
+
+# create stacked errorbars:
+
+axes[1].set_title("accuratezza")
+axes[1].errorbar(labels, means, [means - mins, maxes - means],
+                 fmt='+b', ecolor='black', lw=1)
+axes[1].errorbar(labels, means, std, fmt='+k', ecolor='cornflowerblue', lw=25)
+axes[1].set_xlim(-0.75, 2.75)
+
+plt.savefig('res/sonification_effect.pdf', bbox_inches='tight')
 
 # %% riarrangiamento colonne e righe
 mean_sonif = mean_sub.pivot(index=['subject'], columns=[
@@ -191,25 +227,24 @@ toppa = df.copy()
 confusion_matrix = pd.crosstab(toppa['target_color'], toppa['clicked_color'], rownames=[
                                'obiettivo'], colnames=['cliccato'], normalize='columns')
 
-# %%
-plt.figure(figsize=(7.5, 6))
+
+plt.figure(figsize=(5.2, 4.1))
 sn.heatmap(confusion_matrix, annot=False)
+plt.yticks(rotation=0)
+plt.savefig('res/color_confusion.pdf', bbox_inches='tight')
 plt.show()
 
 
-
-#%% confusione taglie
+# %% confusione taglie
 
 confusion_matrix = pd.crosstab(df['target_size'], df['clicked_size'], rownames=[
                                'obiettivo'], colnames=['cliccato'], normalize='columns')
 
-plt.figure(figsize=(7.5, 6))
+plt.figure(figsize=(7, 5.5))
 sn.heatmap(confusion_matrix, annot=False)
 plt.show()
 
 
-
-
 #########################################
 #########################################
 #########################################
@@ -219,11 +254,10 @@ plt.show()
 #########################################
 
 
-#%% ricerca outliers
+# %% ricerca outliers
 mean_for_subject = mean_sub.groupby(['subject', 'sonification']).mean()
 
 mean_for_subject
-
 
 
 # Altro
@@ -245,39 +279,51 @@ print(df[df['color_dist'] != 0].count())
 errors = df[df['target_size'] != df['clicked_size']].copy()
 
 
-errors['size_big'] = np.where(errors['clicked_size'] > errors["target_size"] , 1, 0)
-errors['size_sma'] = np.where(errors['clicked_size'] < errors["target_size"] , 1, 0)
+errors['size_big'] = np.where(
+    errors['clicked_size'] > errors["target_size"], 1, 0)
+errors['size_sma'] = np.where(
+    errors['clicked_size'] < errors["target_size"], 1, 0)
 
-errors.sum()[['size_big', 'size_sma']].plot.bar() #prendere size big, size small
+# prendere size big, size small
+errors.sum()[['size_big', 'size_sma']].plot.bar()
 errors.sum()
-#%%
+# %%
 
-errors = errors.groupby('subject').mean()[['size_big', 'size_sma']].reset_index()
+errors = errors.groupby('subject').mean(
+)[['size_big', 'size_sma']].reset_index()
 
 
 errors = errors.sort_values(by=['size_big'])
-#%%
+# %%
 labels = np.arange(errors.count()[0])
 big = errors['size_big']
 small = errors['size_sma']
 width = 0.8       # the width of the bars: can also be len(x) sequence
 
-fig, ax = plt.subplots(figsize=(8, 6))
+fig, ax = plt.subplots(figsize=(6, 4))
 
 ax.bar(labels, big, width, label='Più piccoli')
 ax.bar(labels, small, width, bottom=big,
        label='Più grandi')
 
-ax.set_ylabel('Preferenza')
-ax.set_title('Preferenza di dimensione in caso di errore')
+ax.set_ylabel('preferenza')
+ax.set_xlabel('partecipante')
+ax.set_title('')
 ax.legend()
 
-ax.plot([0.05, 0.95], [0, 0.95], transform=ax.transAxes, color='k', linestyle='--', linewidth=1)
+ax.plot([0, 1], [0, 1], transform=ax.transAxes,
+        color='w', linestyle='--', linewidth=2)
+plt.gca().xaxis.grid(False)
+plt.locator_params(nbins=5)
+plt.xlim([-0.5, 20.5])
+plt.ylim([0, 1])
+plt.savefig('res/size_preference.pdf', bbox_inches='tight')
 plt.show()
 # %%
 
 
 taglia = df.copy()
+
 
 def get_size(value):
     if (value >= 20 and value < 28):
@@ -286,6 +332,7 @@ def get_size(value):
         return 'medium'
     elif (value >= 36 and value < 45):
         return 'big'
+
 
 taglia['size'] = taglia['target_size'].apply(get_size)
 
@@ -297,29 +344,74 @@ fig, axes = plt.subplots(ncols=2)
 fig.set_size_inches(8, 6)
 
 taglia.boxplot(ax=axes[0], by='size', column=['color_dist'],
-                 showmeans=True,
-                 patch_artist=True,
-                 showfliers=True,
-                 meanprops=meanprops,
-                 boxprops=boxprops,
-                 whiskerprops=whiskerprops,
-                 medianprops=medianprops,
-                 flierprops=flierprops,
-                 capprops=capprops)
+               showmeans=True,
+               patch_artist=True,
+               showfliers=True,
+               meanprops=meanprops,
+               boxprops=boxprops,
+               whiskerprops=whiskerprops,
+               medianprops=medianprops,
+               flierprops=flierprops,
+               capprops=capprops)
 
 taglia.boxplot(ax=axes[1], by='size', column=['time'],
-                 showmeans=True,
-                 patch_artist=True,
-                 showfliers=True,
-                 meanprops=meanprops,
-                 boxprops=boxprops,
-                 whiskerprops=whiskerprops,
-                 medianprops=medianprops,
-                 flierprops=flierprops,
-                 capprops=capprops)
+               showmeans=True,
+               patch_artist=True,
+               showfliers=True,
+               meanprops=meanprops,
+               boxprops=boxprops,
+               whiskerprops=whiskerprops,
+               medianprops=medianprops,
+               flierprops=flierprops,
+               capprops=capprops)
 
 plt.suptitle('')
 plt.show()
+
+
+# %% PLOT DI MEDIA MINIMO MASSIMO E VARIANZA IN BASE ALLA SIZE
+
+describe = taglia.groupby('size').describe().reset_index().reindex([2, 1, 0])
+
+fig, axes = plt.subplots(ncols=2)
+
+fig.set_size_inches(6, 4)
+
+labels = describe['size']
+
+mins = describe['time']['min']
+maxes = describe['time']['max']
+means = describe['time']['mean']
+std = describe['time']['std']
+
+# create stacked errorbars:
+axes[0].set_title("tempo")
+axes[0].errorbar(labels, means, [means - mins, maxes - means],
+                 fmt='+b', ecolor='black', lw=1)
+axes[0].errorbar(labels, means, std, fmt='+k', ecolor='orange', lw=25)
+axes[0].set_xlim(-0.75, 2.75)
+
+#####
+
+labels = describe['size']
+
+mins = describe['color_dist']['min']
+maxes = describe['color_dist']['max']
+means = describe['color_dist']['mean']
+std = describe['color_dist']['std']
+
+# create stacked errorbars:
+
+axes[1].set_title("accuratezza")
+axes[1].errorbar(labels, means, [means - mins, maxes - means],
+                 fmt='+b', ecolor='black', lw=1)
+axes[1].errorbar(labels, means, std, fmt='+k', ecolor='cornflowerblue', lw=25)
+axes[1].set_xlim(-0.75, 2.75)
+
+plt.savefig('res/size_effect.pdf', bbox_inches='tight')
+
+# %%
+
 
 print('media tempo')
 print('small: ', mean_confidence_interval(
@@ -346,4 +438,3 @@ print('color_dist', fvalue, pvalue)
 tm = taglia['time']
 fvalue, pvalue = stats.f_oneway(tm['small'], tm['medium'], tm['big'])
 print('time', fvalue, pvalue)
-# %%
