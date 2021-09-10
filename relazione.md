@@ -34,7 +34,7 @@ Per trattare questa ipotesi abbiamo realizzato una simulazione in Processing di 
 
 Per ciascuna scena simulata sono stati generati dei punti che si muovono all'interno di un'area quadrata. La dimensione di un punto è generata in modo casuale all'interno di un intervallo di valori, mentre il colore è ricavato dalla mappa di colore Viridis, in modo che ad ogni punto corrisponda uno specifico colore.
 
-![Esempio di una scena](res/scena.png)
+![Esempio di una scena](res/scena.png){width=45%}
 
 La scelta della scala Viridis è stata dettata principalmente dalle sue caratteristiche: robustezza, uniformità e popolarità. Il numero dei punti (e di conseguenza dei colori) è stato scelto in modo da rendere non immediata la distinzione dei punti dal colore simile. Abbiamo impiegato un numero di campioni sufficiente ad introdurre una certa confusione tra i colori, pur permettendo la discriminazione dell'obiettivo mediante la sola componente cromatica. Dopo un certo numero di prove preliminari abbiamo individuato in 27 punti un buon compromesso.
 
@@ -128,26 +128,21 @@ Dai nostri dati è emerso che su 263 errori, 142 volte si è stato prediletto un
 
 Abbiamo pensato che potesse esistere qualche effetto sul tempo o sull'accuratezza in funzione del colore dei punti. I partecipanti, spesso, ammettevano di aver trovato una maggiore difficoltà nel distinguere i punti ai quali attribuivano il colore "blu" o il colore "verde". Per questo motivo siamo andati alla ricerca di qualche differenza evidente di performance tra i vari punti.
 
-![Matrice di confusione del colore](res/color_confusion.pdf){width=45%}
+![Matrice di confusione tra i colori](res/color_confusion.pdf){width=45%}
 
 ![Istogramma dei tempi in secondi per colore](res/time_color.pdf){width=45%}
 
-Tramite una matrice di confusione si può notare che i colori più brillanti della Viridis tendono ad essere individuati correttamente più spesso, mentre tra i colori intermedi si notano regioni con una più marcata confusione. 
+Abbiamo pensato che la maggiore difficoltà percepita si potesse quantificare in termini di accuratezza e tempo di esecuzione. Per questa ragione abbiamo assunto che ai punti più difficili da distinguere potesse corrispondere un maggior grado di confusione, così come un maggior tempo medio di individuazione. Per cercare conferma siamo passati a dei plot rappresentativi di questi aspetti.
 
-Abbiamo anche visualizzato i tempi di ricerca medi per ogni colore, si nota che per i colori più brillanti si impiega meno tempo, così come per i più scuri. I colori centrali tendono a richiedere più tempo, anche se sono presenti delle eccezioni.
+Abbiamo visualizzato una matrice di confusione tra il punto cliccato ed il punto obiettivo, così da individuare i punti che sono stati classificati erroneamente un maggior numero di volte. Inoltre, abbiamo visualizzato un bar plot con i tempi di ricerca medi per ogni colore target.
 
-Da queste visualizzazioni si nota una certa disomogeneità che meriterebbe ulteriori studi, magari replicando lo stesso esperimento, ma coinvolgendo delle mappe di colore differenti.
+Osservando i due grafici si può dire, ad esempio, che i colori più brillanti della scala sono stati i più semplici da individuare. Infatti, i due grafici sono in concordanza per i punti 23, 25 e 26: essi sono i punti classificati erroneamente meno frequentemente, e sono anche tra i punti la cui individuazione ha impiegato il minor tempo.
 
+Nelle regioni che possiamo far corrispondere ai "blu" e ad i "verdi" troviamo, effettivamente, dei tempi maggiori ed un grado di confusione generalmente maggiore. Tuttavia non crediamo che sia adeguato giungere a delle conclusioni, crediamo che per fare ciò sarebbe il caso di realizzare un esperimento specifico.
 
 # Conclusioni
 
-Alla luce dei risultati sperimentali è emerso che la sonificazione una valida tecnica per realizzare un highlight nei bubble plot animati, dato che il suo impiego porta ad una precisione significativamente migliore. 
-
-
-
-
-, al costo di un tempo maggiore, ma mediamente contenuto. 
-
+Alla luce dei risultati sperimentali, è emerso che la sonificazione una valida tecnica per realizzare un highlight nei bubble plot animati, dato che porta ad un effettivo miglioramento nell'accuratezza. Naturalmente rappresentare l'highlight mediante dei canali visuali resta una strategia da preferire. Ciononostante pensiamo che in contesti particolari, l'impiego di sonification simili a queste da noi descritte, possa risultare interessante. Ad esempio, abbiamo pensato alle analisi collaborative: con highlight basati sul suono si potrebbe fare in modo che ogni partecipante metta in evidenza un suo punto di interesse mantenendo la scena inalterata ai suoi collaboratori.
 
 # Fonti
 
