@@ -71,7 +71,7 @@ position = [2, 0, 1]
 # %% tempo di esecuzione in base al colore
 my_cmap = plt.get_cmap("viridis", 27)
 
-time_color = df[df["color_dist"] == 0].groupby(
+time_color = df.groupby(
     "target_color").mean().reset_index()[['target_color', 'time']]
 
 plt.figure(figsize=(6, 4))
@@ -149,7 +149,7 @@ describe = mean_sub.groupby(
 
 fig, axes = plt.subplots(ncols=2)
 
-fig.set_size_inches(6, 4)
+fig.set_size_inches(6, 3.7)
 
 labels = describe['sonification']
 
@@ -375,7 +375,7 @@ describe = taglia.groupby('size').describe().reset_index().reindex([2, 1, 0])
 
 fig, axes = plt.subplots(ncols=2)
 
-fig.set_size_inches(6, 4)
+fig.set_size_inches(6, 3.7)
 
 labels = describe['size']
 

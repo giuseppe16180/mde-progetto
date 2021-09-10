@@ -1,17 +1,17 @@
 ---
-title: "Simulazione bubble plot animati con sonificazione"
-subtitle: Progetto Multisensory and Data Exploration \vspace{0.5cm}
+title:  \vspace{-1cm}Highlight sonoro in bubble plot animati
+subtitle: \vspace{0.3cm}Progetto Multisensory and Data Exploration 
 author:
   - Cristina Zappata
   - Giuseppe Marino
-date: 17 Settembre 2021 \vspace{1cm}
+date: 17 Settembre 2021 \vspace{0.7cm}
 header-includes: |
   \setlength{\columnsep}{1cm}
 classoption: twocolumn
 documentclass: article
 geometry: margin=1.5cm
 output: pdf_document
-fontsize: 12pt
+fontsize: 11pt
 toc: false
 autoEqnLabels: true
 numbersections: true
@@ -19,55 +19,50 @@ numbersections: true
 
 # Introduzione
 
-La visualizzazione è un aspetto fondamentale quando si vogliono presentare dei dati ad un pubblico al fine di comunicare delle relazioni complesse in modo semplice. Hans Rosling fu un pioniere della data visualization, nelle sue presentazioni era solito usare delle rappresentazioni animate per rappresentare questioni legate allo sviluppo umano nei Paesi del mondo. Nel fare ciò era solito utilizzare dei bubble plot animati nel tempo.
+La visualizzazione è un aspetto fondamentale quando si vuole presentare dei dati ad un pubblico al fine di comunicare delle relazioni complesse in modo semplice. Hans Rosling fu un pioniere della data visualization, nelle sue presentazioni era solito usare dei plot per illustrare e discutere questioni legate allo sviluppo umano nei Paesi del mondo. Tra le visualizzazioni da egli rese celebri vi sono i bubble plot, in questi i dati sono rappresentati da dei punti, di dimensione e colore variabile, posizionati su un piano cartesiano. Le dimensioni visuali di ogni punto rappresentano le variabili di un'osservazione e per mostrarne l'evoluzione nel tempo si possono impiegare dei bubble plot animati.
 
-**Tra le varie rappresentazioni possibili vi sono i bubble plot, dove i dati sono rappresentati da dei punti, anche di varia dimensione, e sono posizionati su un piano cartesiano. Per ogni punto si rappresentano 3 variabili: una è rappresentata dall'asse X, una dall'asse Y e una dalla dimensione del punto. I bubble plot possono essere anche animati e quindi rappresentare le variazioni delle variabili in funzione del tempo.**
+Queste visualizzazioni sono intrinsecamente molto efficaci nel comunicare le informazioni espresse nei dati, sono pensate per contribuire ad una visione di insieme. Per questa loro natura può risultare difficile seguire un singolo punto nel suo percorso sul piano, a meno di non introdurre un highlight di qualche tipo.
 
-**Hans Rosling fu un pioniere della data visualization, nelle sue presentazioni era solito usare proprio i bubble blot per rappresentare questioni legate allo sviluppo umano nei Paesi del mondo.**
+In questo progetto abbiamo investigato i possibili vantaggi provenienti dall'impiego del suono per evidenziare un punto in un bubble plot animato. Noi abbiamo ipotizzato che la sonificazione possa aiutare ad individuare e seguire un punto di riferimento nel grafico.
 
-In un bubble plot si visualizza una collezione di dati utilizzando un piano cartesiano: in esso vengono collocati dei punti, per ciascuno di essi la posizione sull'asse orizzontale è determinata da una variabile, così come la posizione sull'asse verticale, altre variabili vengono rappresentate usando le dimensioni colore e taglia dei punti. Per rappresentare le variabili in funzione del tempo risulta pratico ed efficace realizzare dei bubble plot animati, dove frame dopo frame si mostra la progressione dei dati al variare del tempo.
-
-Queste visualizzazioni sono intrinsecamente molto efficaci nel comunicare le informazioni espresse nei dati, e sono pensate per contribuire ad una visione di insieme. Per questo motivo può risultare difficile seguire un singolo punto nel suo percorso sul piano, a meno di non introdurre un highlight di qualche tipo.
-
-In questo progetto abbiamo investigato i possibili vantaggi provenienti dall'impiego del suono per evidenziare un punto nel plot. Abbiamo ipotizzato che la sonificazione possa aiutare ad individuare e seguire un punto di riferimento nella rappresentazione visuale.
 
 # Metodo
 
-Per trattare questa ipotesi abbiamo realizzato una simulazione in Processing di un bubble plot animato, con la possibilità di riprodurre un highlight sonoro (i dettagli implementativi verranno discussi in seguito). Le scene realizzate con questa simulazione sono state impiegate per svolgere degli esperimenti con dei soggetti, al fine di valutare gli effetti della sonification nell'individuazione di un punto obiettivo.
+Per trattare questa ipotesi abbiamo realizzato una simulazione in Processing di un bubble plot animato, con la possibilità di riprodurre un highlight sonoro. Le scene realizzate con questa simulazione sono state impiegate per svolgere degli esperimenti con dei soggetti, al fine di valutare gli effetti della sonification nel task di individuazione di un punto.
 
 ## Rappresentazione visuale
 
-Per ciascuna scena simulata sono stati generati dei punti che si muovono all'interno di un'area quadrata. La dimensione di un punto è generata in modo casuale all'interno di un intervallo di valori, mentre il colore è ricavato dalla mappa di colore Viridis, ad ogni punto corrisponde uno specifico colore.
+Per ciascuna scena simulata sono stati generati dei punti che si muovono all'interno di un'area quadrata. La dimensione di un punto è generata in modo casuale all'interno di un intervallo di valori, mentre il colore è ricavato dalla mappa di colore Viridis, in modo che ad ogni punto corrisponda uno specifico colore.
 
 ![Esempio di una scena](res/scena.png)
 
-La scelta della scala Viridis è stata dettata principalmente dalle sue caratteristiche: robustezza, uniformità e popolarità. Il numero dei punti (e di conseguenza dei colori) è stato scelto in modo da rendere non immediata la distinzione dei punti dal colore simile. Abbiamo impiegato un numero di campioni superiore a quello che normalmente consente una distinzione chiara anche su dei glifi piccoli, così facendo abbiamo coinvolto un numero di livelli sufficiente ad introdurre una certa confusione tra i colori, pur permettendo la discriminazione dell'obiettivo confrontando i soli colori. Dopo un certo numero di prove preliminari abbiamo individuato in 27 punti un buon compromesso.
+La scelta della scala Viridis è stata dettata principalmente dalle sue caratteristiche: robustezza, uniformità e popolarità. Il numero dei punti (e di conseguenza dei colori) è stato scelto in modo da rendere non immediata la distinzione dei punti dal colore simile. Abbiamo impiegato un numero di campioni sufficiente ad introdurre una certa confusione tra i colori, pur permettendo la discriminazione dell'obiettivo mediante la sola componente cromatica. Dopo un certo numero di prove preliminari abbiamo individuato in 27 punti un buon compromesso.
 
-Per simulare quanto rappresentato nei bubble plot, abbiamo affiancato all'area quadrata una leggenda. In questa è resa nota la corrispondenza tra l'etichetta ed il colore. Le etichette consistono di semplici numeri incrementali che partono da zero, mentre i colori corrispondono alla sequenza dei campioni ricavati dalla mappa di colore.
+Abbiamo affiancato all'area quadrata una leggenda per simulare quanto rappresentato nei bubble plot. In questa leggenda è resa nota la corrispondenza tra l'etichetta ed il colore. Le etichette consistono di semplici numeri incrementali che partono da zero, mentre i colori corrispondono alla sequenza dei campioni ricavati dalla mappa di colore, in ordine crescente di brightness.
 
 Per ogni scena è estratto in maniera random un punto che funge da target, ovvero il punto sul quale vorremmo che sia rivolta l'attenzione. Esso è reso noto tramite un'istruzione posta sotto la leggenda.
 
 ## Sonification
 
-Trattandosi di un bubble plot animato, la scelta sulla proprietà da sonificare è ricaduta sulla la velocità del target: il suono è generato a partire da un accordo (ad un punto fermo corrisponde un accordo di Do maggiore, con fondamentale a 32.7 Hz), dove il pitch sale al crescere della velocità del target. Per una data velocità ricaviamo un offset, che è usato come coefficiente da moltiplicare alle frequenze di base dell'accordo. La mappatura è fatta in modo da spaziare all'interno di un'ottava. Questa scelta è stata fatta in seguito a delle prove preliminari, cercando una buona rappresentatività del suono.
+Trattandosi di un bubble plot animato, la scelta sulla proprietà da sonificare è ricaduta sulla la velocità del target: il suono è generato a partire da un accordo il cui pitch sale al crescere della velocità del target (ad un punto fermo corrisponde un accordo di Do maggiore, con fondamentale a 32.7 Hz). Per una data velocità ricaviamo un offset che è usato come coefficiente da moltiplicare alle frequenze di base dell'accordo, in modo da spaziare all'interno di un'ottava. La mappatura velocità-pitch è il risultato di una serie di prove preliminari alla ricerca di una buona rappresentatività del suono.
 
-Il suono è sintetizzato impiegando degli oscillatori sinusoidali, il segnale risultante è filtrato con un filtro passa basso, la cui frequenza di taglio è ricavata sempre dalla velocità del target: ad una bassa velocità corrisponde un suono poco brillante, ad un'alta velocità corrisponde un suono più brillante. Agli oscillatori abbiamo aggiunto un leggero pink noise di fondo per garantire una gamma di frequenze abbastanza vasta, per apprezzare bene le variazioni in brillantezza del suono. Questa sintesi sonora prende spunto da quanto fatto da Niklas Rönnberg [1].
+Il suono è stato sintetizzato impiegando degli oscillatori sinusoidali, il segnale risultante è filtrato con un filtro passa basso la cui frequenza di taglio è ricavata dalla velocità del target: ad una bassa velocità corrisponde un suono poco brillante, ad un'alta velocità corrisponde un suono più brillante. Agli oscillatori abbiamo aggiunto un leggero pink noise di fondo per garantire una gamma di frequenze abbastanza vasta, al fine di apprezzare bene le variazioni in brillantezza del suono. Questa sintesi sonora prende spunto da quanto fatto da Niklas Rönnberg [1].
 
-Abbiamo anche realizzato una variazione di questa sonificazione, che funziona esattamente come prima per quanto riguarda la velocità, ma che introduce un leggero suono di "bump" in caso di variazioni drastiche della traiettoria del punto.
+Abbiamo anche realizzato una variazione di questa sonificazione, funziona esattamente come prima per quanto riguarda la velocità, ma che introduce un leggero suono di "bounce" in caso di variazioni drastiche della traiettoria del punto.
 
 ## Movimento
 
-Il moto di ciascun punto è casuale, ma strutturato in modo che in un intervallo di tempo circoscritto ricalchi un movimento plausibile per un elemento in un bubble plot animato. I punti sono trattenuti all'interno del box, in caso di avvicinamento e contatto con i bordi la traiettoria è deviata per mantenere i punti entro i limiti. A queste variazioni di direzione non corrisponde un bump in quanto si tratta di variazioni artificiali che non si presentano nei bubble plot, la loro sonificazione potrebbe risultare fuorviante.
+Il moto di ciascun punto è casuale, ma è strutturato in modo che in un intervallo di tempo circoscritto ricalchi un movimento plausibile per un elemento in un bubble plot animato. I punti sono trattenuti all'interno del box, in caso di avvicinamento e contatto con i bordi le traiettorie sono deviate per mantenere i punti entro i limiti. A queste variazioni di direzione non corrisponde un bounce in quanto si tratta di variazioni artificiali che non si presentano nei bubble plot, la loro sonificazione potrebbe risultare fuorviante.
 
 ## Partecipanti
 
-Ai nostri esperimenti hanno preso parte 21 partecipanti (8 femmine e 13 maschi) con un'età media di 23 anni (range 13-34) con normali capacità di vista e udito. I partecipanti erano tutti nostri conoscenti. Non è stato fornito alcun compenso per la partecipazione allo studio.
+Ai nostri esperimenti hanno preso parte 21 partecipanti (8 femmine e 13 maschi), con un'età mediana di 23 anni (range 13-34), con normali capacità di vista e udito. I partecipanti erano tutti nostri conoscenti. Non è stato fornito alcun compenso per la partecipazione allo studio.
 
 ## Esperimenti
 
-Ogni partecipante ha svolto la sua sessione in circostanze ambientali confrontabili, per quanto riguarda aspetti come illuminazione ambientale e rumore di fondo. Abbiamo utilizzato due diversi computer portatili, entrambi con un monitor full hd da 14 pollici, utilizzando come dispositivo di puntamento un mouse esterno. Per la riproduzione sonora abbiamo impiegato gli altoparlanti integrati nei portatili, ci siamo accertati che entrambi riproducessero la banda di frequenze coinvolta in modo adeguato.
+Abbiamo eseguito diverse sessioni di esperimenti, cercando di mantenere delle circostanze ambientali confrontabili. Abbiamo utilizzato due diversi computer portatili, entrambi con un monitor full hd da 14 pollici, utilizzando come dispositivo di puntamento un mouse esterno. Per la riproduzione sonora abbiamo impiegato gli altoparlanti integrati nei portatili, ci siamo accertati che entrambi riproducessero la banda di frequenze coinvolta in modo adeguato.
 
-Ogni partecipante è stato sottoposto ad una sessione fatta da più tentativi, ciascuno dei quali con una simulazione diversa. Abbiamo chiesto ai partecipanti di provare ad individuare il target nel minor tempo possibile, cliccando con il cursore sul punto corrispondente.
+Ogni partecipante è stato sottoposto ad una serie di tentativi, ciascuno dei quali in una scena diversa. Abbiamo chiesto ai partecipanti di individuare il target della scena che avevano di fronte, cliccando sul punto corrispondente non appena fossero stati abbastanza certi di averlo trovato.
 
 Le diverse scene possono differire per il livello di sonification, infatti una scena può presentare o meno l'highlight sonoro del target. Alla luce di ciò, i livelli della variabile highlight sonoro sono:
 
@@ -75,79 +70,91 @@ Le diverse scene possono differire per il livello di sonification, infatti una s
 
 - nessuna sonification (\textbf{n}),
 - sonification della velocità (\textbf{s}),
-- sonification della velocità e bump (\textbf{b}).
+- sonification della velocità e bounce (\textbf{b}).
 
-Ogni partecipante esegue 12 tentativi per ciascun livello, per un totale di 39 prove. Il livello di sonification presentato ad ogni trial è casuale, quest'aspetto è fondamentale per compensare gli effetti d'ordine. Inoltre bisogna considerare l'apprendimento, infatti è molto probabile che i partecipanti facciano sensibilmente peggio nei primi tentativi, per circoscrivere gli effetti del learning i partecipanti effettuano una sessione di allenamento preliminare: i primi 9 tentativi comprendono uno stesso numero di trial per ciascuna modalità e vengono esclusi dalla raccolta dei dati.
+Ogni partecipante esegue 12 tentativi per ciascun livello, per un totale di 39 prove. Il livello di sonification presentato in ogni scena è casuale, quest'aspetto è fondamentale per compensare gli effetti d'ordine. Inoltre bisogna considerare l'apprendimento, infatti è molto probabile che i partecipanti facciano sensibilmente peggio nei primi tentativi. Per circoscrivere gli effetti del learning, i partecipanti effettuano una sessione di allenamento preliminare: i primi 9 tentativi vengono esclusi dalla raccolta dei dati (3 prove per ogni livello di sonification).
 
-Abbiamo chiesto ai partecipanti di fornire le risposte nel minor tempo possibile, per ogni risposta abbiamo tenuto traccia del livello di sonificazione, dell'accuratezza e del tempo di risposta, di taglia e colore per i due punti di interesse (il target e il selezionato). Per accuratezza intendiamo l'errore tra il colore del punto selezionato e quello del punto obiettivo, ossia la loro distanza **nella scala Viridis** tra i campioni della scala Viridis. Dopodiché, per ciascun partecipante, abbiamo ricavato l'accuratezza media e il tempo medio per le tre condizione di test. Dato che l'accuratezza è calcolata con una misura di distanza, si ha accuratezza massima quando la distanza è pari a zero, ovvero quando si è selezionato correttamente l'obiettivo.
+Per ogni risposta abbiamo tenuto traccia del livello di sonificazione, dell'accuratezza e del tempo di risposta, della taglia e del colore dei due punti di interesse (target e selezionato). Per accuratezza intendiamo la distanza in step tra il punto selezionato e il punto obiettivo nella legenda. Si ha accuratezza massima quando la distanza è pari a zero, ovvero quando si è selezionato correttamente l'obiettivo. 
 
 # Risultati
 
 Una volta completata la fase sperimentale siamo passati all'analisi dei dati ottenuti. L'aspetto più interessante è certamente quello dovuto ai possibili vantaggi della sonificazione, tuttavia abbiamo investigato pure possibili effetti dovuti alla mappa di colore e alla dimensione dei punti.
 
-## Dimensione
+## Sonification
 
-Come è noto, taglia e colore sono due dimensioni visuali separabili e proprio per questo il loro utilizzo si addice ai bubble plot. Tuttavia noi abbiamo voluto verificare se la taglia dei cerchi impattasse nella capacità di discriminare i colori. Abbiamo suddiviso i punti in tre gruppi: small, medium e big, e per ciascun partecipante abbiamo ricavato tempo di esecuzione e accuratezza media per ciascuna classe di dimensione. Nonostante i dati sperimentali sembrino essere a favore dei cerchi di taglia media, i test statistici non ci hanno permesso di rigettare l'ipotesi nulla di nessuna differenza tra le medie. (valori)
+Abbiamo ricavato l'accuratezza media e il tempo medio per ciascun partecipante, rispetto alle tre condizioni di test. Ricorrendo ai box plot di queste misure per ciascun livello di sonificazione ci siamo resi conto che esistessero delle differenze tra le medie, quindi abbiamo proceduto a verificare se queste fossero significative. 
 
-Abbiamo provato a ricercare ulteriori relazioni tra accuratezza e taglia dei punti, ci siamo chiesti se in caso di errore fosse più frequente la predilezione di punti grandi su punti piccoli o viceversa. Dai nostri dati è emerso che su 163 errori, 85 volte si è stato prediletto un punto più grande e 70 volte un punto più piccolo (nei restati errori la taglia era uguale).
+![Plot di minimo, massimo, media e deviazione standard per le distribuzioni di tempo e accuratezza medi rispetto i tre livelli di sonification.](res/sonification_effect.pdf){width=45%}
 
-Abbiamo rappresentato la predilezione per ogni partecipante, l'andamento non sembra presentare particolari anomalie tali da giustificare analisi più accurate.
+I **tempi medi** in secondi per ciascuna delle condizioni d'analisi sono: per **n** 9.07 (CI 95%[7.61, 10.54]), per **s** 15.45 (CI 95%[10.70, 20.21]), per **b** 15.88 (CI 95%[11.28, 20.48]).
 
-![Predilezione di taglia in caso di errore per partecipante](res/size_preference.pdf)
+Abbiamo verificato l'ipotesi nulla di nessuna differenza significativa tra le medie utilizzando il test statistico ANOVA a misure ripetute, rispetto al fattore sonification. L'esito del test ci ha portato a rigettare l'ipotesi nulla, in quanto abbiamo ottenuto un p-value = 0.02 < 0.05.
 
-## Accuratezza
+Dai confronti a coppie post hoc con un t-test corretto con Bonferroni si nota che esiste una differenza significativa tra **b** e **n** con un p-value = 0.0016 < 0.005 e tra **s** e **n** con un p-value = 0.0045 < 0.005, mentre non è stato possibile rigettare l'ipotesi tra **s** e **b** (p-value = 1.0).
 
-Qui di seguito riportiamo l'accuratezza media per ciascuna delle condizioni d'analisi, con i relativi intervalli di confidenza al 95%:
 
-\vspace{-6pt}
+L'**accuratezza media** per ciascuna delle condizioni d'analisi sono: **n** 0.93 (CI 95% [0.69, 1.17]), per **s** 0.48 (CI 95% [0.28, 0.67]), per **b** 0.616 (CI 95%[0.41, 0.81]).
 
-- n: 0.933, [0.692, 1.175];
-- s: 0.480, [0.286, 0.675];
-- b: 0.616, [0.4144, 0.819].
+Abbiamo verificato l'ipotesi nulla di nessuna differenza significativa tra le medie utilizzando il test statistico ANOVA a misure ripetute, rispetto al fattore sonification. L'esito del test ci ha portato a rigettare l'ipotesi nulla, in quanto abbiamo ottenuto un p-value = 0.008 < 0.01. 
 
-![Plot che evidenza le differenze tra le accuratezze per i tre livelli di sonification.](res/sonification_effect.pdf)
+Dai confronti post-hoc a coppie con un t-test corretto con Bonferroni si nota una differenza significativa tra **b** e **n** con un p-value = 0.043 < 0.05 e tra **n** e **s** con un p-value = 0.0015 < 0.005, mentre non è stato possibile rigettare l'ipotesi tra **s** e **b** (p-value = 0.2197).
 
-Abbiamo verificato l'ipotesi di differenza nulla tra le medie utilizzando il test statistico ANOVA a misure ripetute, sul singolo fattore sonification. L'esito del test ci ha portato a rigettare l'ipotesi nulla, in quanto abbiamo ottenuto un $p-value = 0.008 < 0.05$ . Facendo dei confronti a coppie con un t-test corretto con Bonferroni ha rivelato una differenza significativa tra **b** e **n** con un p-value corretto di $0.043$ e tra **n** e **s** con un p-value corretto di $0.0015$ .
+### Considerazioni
 
-Quindi possiamo affermare che l'uso della sonificazione aiuta ai fini di una maggiore precisione nell'identificazione dell'obiettivo.
+Le scene con la sonificazione, sia di tipo **s** che di tipo **b**, risultano necessitare di più tempo. Questo è un risultato atteso, ci suggerisce che i partecipanti hanno usato la sonificazione per raffinare la loro risposta, una volta individuato un punto candidato sono rimasti ad osservarlo finché non hanno riscontrato una corrispondenza con il suono. Questo riscontro ha permesso loro di aumentare l'accuratezza, anche se non è stato sufficiente ad abbattere del tutto gli errori. 
 
-## Tempo
+Non abbiamo somministrato degli effettivi questionari ai nostri partecipanti, ma abbiamo raccolto alcune loro considerazioni. In molti hanno ribadito l'efficacia della sonificazione, sottolineando quanto fosse difficile fare senza, arrivando a credere di aver commesso molti errori in assenza di suono. Tuttavia, alla luce dei dati sperimentali, anche in assenza di sonificazione i soggetti sono stati capaci di fare abbastanza bene.
 
-Qui di seguito riportiamo il tempo medio in secondi per ciascuna delle condizioni d'analisi, con i relativi intervalli di confidenza al 95%:
+Ci aspettavamo che il suono bounce di **b** potesse tornare utile per richiamare l'attenzione sul punto obiettivo, e che così facendo potesse introdurre dei miglioramenti in accuratezza con tempi migliori rispetto a **s**. I dati hanno dimostrato che questo effetto non esiste, o che comunque non è vantaggioso come da noi sperato. Inoltre alcuni partecipanti hanno definito la sonificazione **b** come controproducente, in quanto venivano distratti dai rimbalzi. Da queste considerazioni possiamo asserire che **b** non è da preferire ad **s**.
 
-\vspace{-6pt}
+## Ulteriori risultati
 
-- **n**: 9.079, [7.615, 10.542];
-- **s**: 15.459, [10.701, 20.217];
-- **b**: 15.882, [11.280, 20.484].
+Terminata l'analisi sui soli effetti del fattore sonification abbiamo ricercato delle differenze di performance contestualmente alle differenze tra le altre variabili visuali coinvolte. Una volta individuate avremmo potuto studiarne gli effetti congiuntamente ai diversi livelli di sonification.
 
-![Plot che evidenza le differenze nei tempi di esecuzione per i tre livelli di sonification.](res/time_effect.pdf)
+### Dimensione
 
-Abbiamo eseguito lo stesso test di prima per verificare la rigettabilità dell'ipotesi nulla di nessuna differenza tra i tempi di esecuzione, il test ha restituito un $p-value = 0.02 < 0.05$ , il che ci porta a dire che possiamo rigettare l'ipotesi nulla. Dai confronti a coppie con un t-test corretto con Bonferroni si nota che esiste una differenza significativa tra **b** e **n** con un p-value corretto di $0.0016$ , e tra **s** e **n** con un p-value corretto di $0.0045$ .
+Noi ci siamo chiesti se la taglia dei cerchi impattasse nella capacità di discriminare i colori. Per investigare ciò abbiamo suddiviso i punti in tre classi di dimensioni: small, medium e big, a questo punto abbiamo ricavato i tempi e le accuratezze medi di ciascun partecipante per ciascuna classe. I dati sperimentali sembrano non mostrare differenze di medie significative, non potendo rigettare l'ipotesi nulla di nessuna differenza tra le medie. Per i tempi si ha un p-value = 0.736. Mentre per le accuratezze il p-value = 0.325.
 
-Quindi possiamo affermare che le simulazioni con la sonificazione, sia di tipo **s** che di tipo **b**, risultano necessitare di più tempo. Invece, nel caso di nessuna sonificazione si tende a rispondere più velocemente perché non si attende il riscontro con la sonificazione.
+![Plot per le distribuzioni di tempo e accuratezza medi rispetto alle tre classi di dimensioni.](res/size_effect.pdf){width=45%}
 
-<!--
-![Istogramma dei tempi per sonificazione](res/time_hist.pdf)
--->
+Abbiamo provato a ricercare ulteriori relazioni tra accuratezza e taglia dei punti, ci siamo chiesti se in caso di errore fosse più frequente la predilezione di punti grandi su punti piccoli o viceversa. 
 
-## Colore
+![Rappresentazione delle percentuali di preferenza di taglia in caso di errore per partecipante](res/size_preference.pdf){width=45%}
 
-Abbiamo pensato che potesse esistere qualche effetto in funzione del colore dei punti. Tramite una matrice di confusione ci siamo resi conto che gli unici colori un po' più distinguibili sono quelli più brillanti, mentre la massima confusione è per i colori centrali. Questa osservazione è sostenuta anche dai tempi medi di individuazione corretta per i vari punti, dove si nota che il tempo è più alto per dei colori nella regione centrale, mentre è più basso per gli estremi. Anche se dei tempi medi nei livelli centrali ci fanno pensare che queste differenze possano essere dovute al caso.
+Dai nostri dati è emerso che su 263 errori, 142 volte si è stato prediletto un punto più grande e 109 volte un punto più piccolo (nei restati errori la taglia era uguale). Abbiamo rappresentato la predilezione per ogni partecipante, dall'andamento si nota una leggera tendenza a selezionare dei punti più piccoli, tuttavia non sappiamo se questa sia significativa. Sarebbe il caso di realizzare un esperimento specifico (ad esempio coinvolgendo due classi di punti dalle dimensioni notevolmente diverse) per verificare se effettivamente i punti più piccoli siano preferiti in caso di incertezza.
 
-![Istogramma dei tempi in secondi per colore](res/time_color.pdf)
 
-![Matrice di confusione del colore](res/color_confusion.pdf)
+### Colore
 
-# Considerazioni
+Abbiamo pensato che potesse esistere qualche effetto sul tempo o sull'accuratezza in funzione del colore dei punti. I partecipanti, spesso, ammettevano di aver trovato una maggiore difficoltà nel distinguere i punti ai quali attribuivano il colore "blu" o il colore "verde". Per questo motivo siamo andati alla ricerca di qualche differenza evidente di performance tra i vari punti.
 
-Non abbiamo somministrato degli effettivi questionari ai nostri partecipanti, ma abbiamo raccolto alcune loro considerazioni. Tra queste abbiamo che diversi partecipanti hanno trovato la sonificazione con il bump controproducente, perché il rimbalzo risultava più una sorgente di distrazione che di aiuto. Questo potrebbe giustificare il leggero peggioramento nel caso \textbf{b} rispetto che al \textbf{s}, ma la differenza non risulta essere significativa.
+![Matrice di confusione del colore](res/color_confusion.pdf){width=45%}
 
-Inoltre, quasi tutti i partecipanti hanno ritenuto sgradevole la sonificazione della velocità, mentre pochi hanno sottolineato il vantaggio percepito dall'impiego della sonificazione. Questo potrebbe farci pensare che ad un suono migliore possano corrispondere delle prestazioni migliori.
+![Istogramma dei tempi in secondi per colore](res/time_color.pdf){width=45%}
+
+Tramite una matrice di confusione si può notare che i colori più brillanti della Viridis tendono ad essere individuati correttamente più spesso, mentre tra i colori intermedi si notano regioni con una più marcata confusione. 
+
+Abbiamo anche visualizzato i tempi di ricerca medi per ogni colore, si nota che per i colori più brillanti si impiega meno tempo, così come per i più scuri. I colori centrali tendono a richiedere più tempo, anche se sono presenti delle eccezioni.
+
+Da queste visualizzazioni si nota una certa disomogeneità che meriterebbe ulteriori studi, magari replicando lo stesso esperimento, ma coinvolgendo delle mappe di colore differenti.
+
+
+# Conclusioni
+
+Alla luce dei risultati sperimentali è emerso che la sonificazione una valida tecnica per realizzare un highlight nei bubble plot animati, dato che il suo impiego porta ad una precisione significativamente migliore. 
+
+
+
+
+, al costo di un tempo maggiore, ma mediamente contenuto. 
+
 
 # Fonti
 
-1. Materiale didattico del corso Multisensory and Data Exploration - Davide Rocchesso a.a. 20/21
-2. Niklas Rönnberg - Musical sonification supports visual discrimination of color intensity
-3. Niklas Rönnberg - Sonification supports perception of brightness contrast
-4. Hans Rosling
+[1] Davide Rocchesso - Materiale didattico del corso Multisensory and Data Exploration - A.A. 20/21
+
+[2] Niklas Rönnberg - Musical sonification supports visual discrimination of color intensity
+
+[3] Niklas Rönnberg - Sonification supports perception of brightness contrast
+
+[4] Hans Rosling - TED Talk
