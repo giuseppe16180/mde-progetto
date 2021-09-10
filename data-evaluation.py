@@ -74,7 +74,7 @@ my_cmap = plt.get_cmap("viridis", 27)
 time_color = df.groupby(
     "target_color").mean().reset_index()[['target_color', 'time']]
 
-plt.figure(figsize=(6, 4))
+plt.figure(figsize=(6, 3.5))
 plt.bar(np.round(time_color['target_color']), time_color['time'], align='center', edgecolor='w', width=0.85,
         color=my_cmap(time_color['target_color']))
 plt.xlim([-0.5, 26.5])
@@ -149,7 +149,7 @@ describe = mean_sub.groupby(
 
 fig, axes = plt.subplots(ncols=2)
 
-fig.set_size_inches(6, 3.7)
+fig.set_size_inches(6.2, 3.3)
 
 labels = describe['sonification']
 
@@ -300,7 +300,7 @@ big = errors['size_big']
 small = errors['size_sma']
 width = 0.8       # the width of the bars: can also be len(x) sequence
 
-fig, ax = plt.subplots(figsize=(6, 4))
+fig, ax = plt.subplots(figsize=(6.2, 3.3))
 
 ax.bar(labels, big, width, label='Più piccoli')
 ax.bar(labels, small, width, bottom=big,
@@ -375,7 +375,7 @@ describe = taglia.groupby('size').describe().reset_index().reindex([2, 1, 0])
 
 fig, axes = plt.subplots(ncols=2)
 
-fig.set_size_inches(6, 3.7)
+fig.set_size_inches(6.2, 3.3)
 
 labels = describe['size']
 
