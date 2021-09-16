@@ -97,7 +97,7 @@ print('s: ', mean_confidence_interval(
 print('b: ', mean_confidence_interval(
     mean_sub[mean_sub['sonification'] == 'b']['time']))
 
-# %% medie per l'accuratezza
+# %% medie per l'errore
 print('media colore')
 print('n: ', mean_confidence_interval(
     mean_sub[mean_sub['sonification'] == 'n']['color_dist']))
@@ -176,7 +176,7 @@ std = describe['color_dist']['std']
 
 # create stacked errorbars:
 
-axes[1].set_title("accuratezza")
+axes[1].set_title("errore")
 axes[1].errorbar(labels, means, [means - mins, maxes - means],
                  fmt='+b', ecolor='black', lw=1)
 axes[1].errorbar(labels, means, std, fmt='+k', ecolor='cornflowerblue', lw=25)
@@ -302,17 +302,17 @@ width = 0.8       # the width of the bars: can also be len(x) sequence
 
 fig, ax = plt.subplots(figsize=(6.2, 3.3))
 
-ax.bar(labels, big, width, label='Più piccoli')
+ax.bar(labels, big, width, label='Più grandi')
 ax.bar(labels, small, width, bottom=big,
-       label='Più grandi')
+       label='Più piccoli')
 
 ax.set_ylabel('preferenza')
 ax.set_xlabel('partecipante')
 ax.set_title('')
 ax.legend()
 
-ax.plot([0, 1], [0, 1], transform=ax.transAxes,
-        color='w', linestyle='--', linewidth=2)
+# ax.plot([0, 1], [0, 1], transform=ax.transAxes,
+#        color='w', linestyle='--', linewidth=2)
 plt.gca().xaxis.grid(False)
 plt.locator_params(nbins=5)
 plt.xlim([-0.5, 20.5])
@@ -402,7 +402,7 @@ std = describe['color_dist']['std']
 
 # create stacked errorbars:
 
-axes[1].set_title("accuratezza")
+axes[1].set_title("errore")
 axes[1].errorbar(labels, means, [means - mins, maxes - means],
                  fmt='+b', ecolor='black', lw=1)
 axes[1].errorbar(labels, means, std, fmt='+k', ecolor='cornflowerblue', lw=25)
